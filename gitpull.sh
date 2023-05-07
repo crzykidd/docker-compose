@@ -4,7 +4,7 @@
 # Uncomment if you want the script to always use the scripts
 # directory as the folder to look through
 #REPOSITORIES="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-REPOSITORIES="~/git"
+REPOSITORIES=$HOME$"/git"
 echo $REPOSITORIES
 IFS=$'\n'
 
