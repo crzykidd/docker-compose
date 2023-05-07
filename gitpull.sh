@@ -10,6 +10,7 @@ IFS=$'\n'
 
 for REPO in `ls "$REPOSITORIES/"`
 do
+  echo $REPOSITORIES
   if [ -d "$REPOSITORIES/$REPO" ]
   then
     echo "Updating $REPOSITORIES/$REPO at `date`"
