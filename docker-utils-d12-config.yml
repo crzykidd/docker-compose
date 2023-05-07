@@ -10,6 +10,7 @@ services:
 
   traefik:
     image: "traefik:latest"
+    container_name: utils-traefik
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -28,7 +29,7 @@ services:
     image: b4bz/homer
     #To build from source, comment previous line and uncomment below
     #build: .
-    container_name: homer
+    container_name: utils-homer
     volumes:
       - ~/docker/utils/homer:/www/assets
     ports:
