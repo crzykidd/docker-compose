@@ -7,7 +7,7 @@ networks:
 services:
   portainer-agent:
     image: portainer/agent:latest
-    user: 1000:1000
+    #user: 1000:1000
     container_name: portainer-agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
