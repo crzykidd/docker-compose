@@ -110,7 +110,28 @@ services:
       - "traefik.http.routers.overseerr.rule=Host(`overseerr.home.arpa`)"
       - "traefik.http.routers.overseerr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
-
+  syncthing:
+    image: syncthing/syncthing
+    container_name: syncthing
+    hostname: archive-syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /mnt/fs02-media/working:/mnt/fs02-media-working
+      - syncthing:/var/syncthing
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+    restart: unless-stopped
+    networks:
+      - traefiknet
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.syncthing.rule=Host(`syncthing.home.arpa`)"
+      - "traefik.http.routers.syncthing.entrypoints=web"
+      - "traefik.docker.network=traifiknet"
 
 volumes:
   sonarr:
@@ -142,3 +163,9 @@ volumes:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/dnloads/overseerr"
+  
+  syncthing:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/dnloads/syncthing/config"      
