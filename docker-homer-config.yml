@@ -11,7 +11,7 @@ services:
     #build: .
     container_name: utils-homer
     volumes:
-      - ~/docker/utils/homer:/www/assets
+      - homer:/www/assets
     ports:
       - 82:8080
     user: 1000:1000 # default
@@ -24,3 +24,10 @@ services:
       - "traefik.http.routers.homer.rule=Host(`homer.home.arpa`)"
       - "traefik.http.routers.homer.entrypoints=web"
       - "traefik.docker.network=traifiknet"
+
+volumes:
+  homer:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/homer"
