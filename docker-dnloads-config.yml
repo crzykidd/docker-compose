@@ -16,6 +16,7 @@ services:
       - "traefik.http.routers.sonarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
     volumes:
+      - dnloads/sonarr/config:/config
       - /mnt/fs02-media:/mnt/fs02-media
       - /etc/localtime:/etc/localtime:ro
     environment:
