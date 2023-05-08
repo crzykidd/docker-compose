@@ -36,7 +36,7 @@ services:
       - "traefik.http.routers.radarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
     volumes:
-      - /docker-data/dnloads/radarr/config:/config
+      - radarr:/config
       - /mnt/fs02-media:/mnt/fs02-media
     environment:
       - TZ=America/Los_Angeles
@@ -47,28 +47,6 @@ services:
     restart: unless-stopped
     networks:
       - traefiknet
-
-
-  jackett:
-    container_name: dnloads-jackett
-    image: ghcr.io/linuxserver/jackett:latest
-    restart: unless-stopped
-    ports:
-      - '9117:9117'
-    environment:
-      - TZ=America/Los_Angeles
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /docker-data/dnloads/jackett/config:/config
-      - /etc/localtime:/etc/localtime:ro
-    networks:
-      - traefiknet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jackett.rule=Host(`jackett.home.arpa`)"
-      - "traefik.http.routers.jackett.entrypoints=web"
-      - "traefik.docker.network=traifiknet"
 
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
@@ -92,6 +70,7 @@ services:
       - "traefik.http.routers.lidarr.rule=Host(`lidarr.home.arpa`)"
       - "traefik.http.routers.lidarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
+
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: dnloads-prowlarr
@@ -100,7 +79,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - /docker-data/dnloads/prowlarr/config:/config
+      - prowlarr:/config
     ports:
       - 9696:9696
     restart: unless-stopped
@@ -122,7 +101,7 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - /docker-data/dnloads/overseerr:/app/config
+      - overseerr:/app/config
     restart: unless-stopped
     networks:
       - traefiknet
@@ -140,8 +119,26 @@ volumes:
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/dnloads/sonarr/config"
 
+  radarr:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/dnloads/radarr/config"
+  
   lidarr:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/dnloads/lidarr/config"
+
+  prowlarr:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/dnloads/prowlarr/config"
+
+  overseerr:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/dnloads/overseerr"
