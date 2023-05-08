@@ -1,0 +1,26 @@
+version: "3.5"
+
+networks:
+  traefiknet:
+    name: traefiknet
+
+services:
+  homer:
+    image: b4bz/homer
+    #To build from source, comment previous line and uncomment below
+    #build: .
+    container_name: utils-homer
+    volumes:
+      - ~/docker/utils/homer:/www/assets
+    ports:
+      - 82:8080
+    user: 1000:1000 # default
+    environment:
+      - INIT_ASSETS=1 # default
+    networks:
+      - traefiknet
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homer.rule=Host(`homer.home.arpa`)"
+      - "traefik.http.routers.homer.entrypoints=web"
+      - "traefik.docker.network=traifiknet"
