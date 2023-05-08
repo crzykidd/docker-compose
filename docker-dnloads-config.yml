@@ -79,7 +79,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - /docker-data/dnloads/lidarr/config:/config
+      - lidarr:/config
       - /mnt/fs02-media:/fs02-media #optional
       - /mnt/leda_complete/tor-music-archive:/tor-music-archive #optional
     ports:
@@ -139,3 +139,9 @@ volumes:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/dnloads/sonarr/config"
+
+  lidarr:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/dnloads/lidarr/config"
