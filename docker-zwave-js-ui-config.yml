@@ -1,0 +1,17 @@
+version: '3.5'
+
+# zwave js ui config file.   Ran seperate as it is on a raspi
+
+services:
+  zwave-js-ui:
+    image: zwavejs/zwave-js-ui:latest
+    restart: always
+    tty: true
+    stop_signal: SIGINT
+    devices:
+      - '/dev/ttyUSB0:/dev/zwave'
+    volumes:
+      - /docker-data/zwave-js-ui/store:/usr/src/app/store
+    ports:
+      - "8091:8091"
+      - "3000:3000"
