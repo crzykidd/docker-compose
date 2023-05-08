@@ -112,7 +112,7 @@ services:
       - "traefik.docker.network=traifiknet"
   syncthing:
     image: syncthing/syncthing
-    container_name: syncthing
+    container_name: dnloads-syncthing
     hostname: archive-syncthing
     environment:
       - PUID=1000
