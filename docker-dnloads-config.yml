@@ -16,7 +16,7 @@ services:
       - "traefik.http.routers.sonarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
     volumes:
-      - dnloads/sonarr/config:/config
+      - sonarr:/config
       - /mnt/fs02-media:/mnt/fs02-media
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -134,8 +134,8 @@ services:
 
 
 volumes:
-  dnloads:
+  sonarr:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
-      device: ":/volume1/docker-data/dnloads"
+      device: ":/volume1/docker-data/dnloads/sonarr/config"
