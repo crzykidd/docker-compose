@@ -36,6 +36,11 @@ services:
     environment:
       - PASSWORD=flame_password
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flame.rule=Host(`flame.home.arpa`)"
+      - "traefik.http.routers.flame.entrypoints=web"
+      - "traefik.docker.network=traifiknet"
 
 
 volumes:
