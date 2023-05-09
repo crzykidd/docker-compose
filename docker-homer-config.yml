@@ -43,19 +43,19 @@ services:
       - "traefik.docker.network=traifiknet"
 
 
-    organizr:
-        container_name: organizr
-        hostname: organizr
-        image: organizr/organizr:latest
-        restart: unless-stopped
-        ports:
-            - 83:80
-        volumes:
-            - organizr:/config
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=America/Los_Angeles
+  organizr:
+    container_name: organizr
+    hostname: organizr
+    image: organizr/organizr:latest
+    restart: unless-stopped
+    ports:
+      - 83:80
+    volumes:
+      - organizr:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
 
 volumes:
   homer:
