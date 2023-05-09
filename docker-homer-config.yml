@@ -25,9 +25,28 @@ services:
       - "traefik.http.routers.homer.entrypoints=web"
       - "traefik.docker.network=traifiknet"
 
+  flame:
+    image: pawelmalak/flame:latest
+    container_name: flame
+    volumes:
+      - flame:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration feature
+    ports:
+      - 5005:5005
+    environment:
+      - PASSWORD=flame_password
+    restart: unless-stopped
+
+
 volumes:
   homer:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/homer"
+
+  flame:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/flame"
