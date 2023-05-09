@@ -43,6 +43,20 @@ services:
       - "traefik.docker.network=traifiknet"
 
 
+    organizr:
+        container_name: organizr
+        hostname: organizr
+        image: organizr/organizr:latest
+        restart: unless-stopped
+        ports:
+            - 83:80
+        volumes:
+            - organizr:/config
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=America/Los_Angeles
+
 volumes:
   homer:
     driver_opts:
@@ -55,3 +69,9 @@ volumes:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/flame"
+
+  organizer:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/organizer"
