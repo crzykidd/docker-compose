@@ -74,4 +74,4 @@ volumes:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
-      device: ":/volume1/docker-data/organizer"
+      device: ":/volume1/docker-data/organizr"
