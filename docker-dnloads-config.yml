@@ -15,6 +15,10 @@ services:
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.home.arpa`)"
       - "traefik.http.routers.sonarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
+      - flame.type=application # "app" works too
+      - flame.name=Sonarr
+      - flame.url=http://sonarr.home.arpa
+      #- flame.icon=icon-name # optional, default is "docker"
     volumes:
       - sonarr:/config
       - /mnt/fs02-media:/mnt/fs02-media
