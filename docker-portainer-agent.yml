@@ -16,4 +16,4 @@ services:
       - "9001:9001"
     restart: unless-stopped
     networks:
-      - traefiknet
+      - traefiknet 
