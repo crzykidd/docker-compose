@@ -7,7 +7,7 @@ networks:
 
 services:
 
-# influxdb2 is accessed by http://influxdb2.home.arap:8086 
+  # influxdb2 is accessed by http://influxdb2.home.arpa:8086 
   influxdb2:
     container_name: influxdb2
     image: influxdb:latest
