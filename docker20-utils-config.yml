@@ -1,6 +1,6 @@
 version: "3.5"
 # Main Utils Docker Compose file currently running on Docker20
-
+# Home directory for dcoker compose should be ~/docker/utils
 
 networks:
   traefiknet:
