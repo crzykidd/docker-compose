@@ -1,7 +1,10 @@
 # Databases Docker Stack as these are used for multiple other stacks.
 
-
-version: '3'
+version: '3.5'
+networks:
+  traefiknet:
+    name: traefiknet
+    
 services:
   influxdb2:
     container_name: influxdb2
@@ -14,6 +17,13 @@ services:
     environment:
       - tz=america/los_angeles
       - INFLUXDB_HTTP_LOG_ENABLED=true  
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.influxdb2.rule=Host(`influxdb2.home.arpa`)"
+      - "traefik.http.routers.influxdb2.entrypoints=web"
+      - "traefik.docker.network=traifiknet"
+
 
 
 volumes:
