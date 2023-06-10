@@ -1,0 +1,24 @@
+# Databases Docker Stack as these are used for multiple other stacks.
+
+
+version: '3'
+services:
+  influxdb2:
+    container_name: influxdb2
+    image: influxdb:latest
+    volumes:
+      - influxdb2:/var/lib/influxdb2
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '8086:8086'
+    environment:
+      - tz=america/los_angeles
+      - INFLUXDB_HTTP_LOG_ENABLED=true  
+
+
+volumes:
+  influxdb2:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/databases/influxdb2"
