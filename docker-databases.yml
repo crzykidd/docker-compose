@@ -4,7 +4,7 @@ version: '3.5'
 networks:
   traefiknet:
     name: traefiknet
-    
+
 services:
   influxdb2:
     container_name: influxdb2
@@ -22,6 +22,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.influxdb2.rule=Host(`influxdb2.home.arpa`)"
       - "traefik.http.routers.influxdb2.entrypoints=web"
+      - "traefik.port=8086"
       - "traefik.docker.network=traifiknet"
 
 
