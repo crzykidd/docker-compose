@@ -1,0 +1,22 @@
+#Stack for all supporting systems for IOT devices.
+
+version: '3.5'
+
+services:
+  esphome:
+    container_name: iotutils-esphome
+    image: esphome/esphome
+    ports:
+      - 6052:6052
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - esphome:/config:rw
+    network_mode: host
+    restart: unless-stopped
+
+volumes:
+  esphome:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/iotutils/esphome"
