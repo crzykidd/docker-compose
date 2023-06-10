@@ -6,6 +6,8 @@ networks:
     name: traefiknet
 
 services:
+
+# influxdb2 is accessed by http://influxdb2.home.arap:8086 
   influxdb2:
     container_name: influxdb2
     image: influxdb:latest
@@ -18,12 +20,7 @@ services:
       - tz=america/los_angeles
       - INFLUXDB_HTTP_LOG_ENABLED=true  
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.influxdb2.rule=Host(`influxdb2.home.arpa`)"
-      - "traefik.http.routers.influxdb2.entrypoints=web"
-      - "traefik.port=8086"
-      - "traefik.docker.network=traifiknet"
+
 
 
 
@@ -32,4 +29,4 @@ volumes:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
-      device: ":/volume1/docker-data/databases/influxdb2"
+      device: ":/volume1/docker-data/databases/influxdb2"d
