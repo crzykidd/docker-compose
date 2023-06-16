@@ -13,6 +13,11 @@ services:
       - esphome:/config:rw
     network_mode: host
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.esphome.rule=Host(`esphome.home.arpa`)"
+      - "traefik.http.routers.esphome.entrypoints=web"
+      - "traefik.docker.network=traifiknet"
 
 volumes:
   esphome:
