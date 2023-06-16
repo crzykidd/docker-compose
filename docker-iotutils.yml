@@ -1,7 +1,9 @@
 #Stack for all supporting systems for IOT devices.
 
 version: '3.5'
-
+networks:
+  traefiknet:
+    name: traefiknet
 services:
   esphome:
     container_name: iotutils-esphome
