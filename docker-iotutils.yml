@@ -11,7 +11,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - esphome:/config:rw
-    network_mode: host
+    #network_mode: host
     restart: unless-stopped
     labels:
       traefik.enable: true
