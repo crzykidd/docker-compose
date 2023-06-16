@@ -25,7 +25,7 @@ services:
       traefik.http.routers.esphome.entrypoints: web
       traefik.docker.network: traifiknet
       #traefik.http.routers.esphome.rule: HostRegexp(`{any:.+}`)
-      http.services.esphome.loadBalancer.servers: url=http://esphome.home.arpa:6052
+      traefik.http.services.esphome.loadBalancer.servers: url=http://esphome.home.arpa:6052
       #traefik.http.services.esphome.loadbalancer.server.port: 6052
 
 volumes:
