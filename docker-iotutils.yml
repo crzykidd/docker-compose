@@ -14,10 +14,12 @@ services:
     network_mode: host
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.esphome.rule=Host(`esphome.home.arpa`)"
-      - "traefik.http.routers.esphome.entrypoints=web"
-      - "traefik.docker.network=traifiknet"
+      traefik.enable: true"
+      traefik.http.routers.esphome.rule: Host(`esphome.home.arpa`)
+      traefik.http.routers.esphome.entrypoints: web
+      traefik.docker.network: traifiknet
+      #traefik.http.routers.esphome.rule: HostRegexp(`{any:.+}`)
+      #traefik.http.services.esphome.loadbalancer.server.port: 6052
 
 volumes:
   esphome:
