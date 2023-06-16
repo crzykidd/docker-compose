@@ -16,8 +16,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - esphome:/config:rw
     network_mode: host
-    networks:
-      - traefiknet
+    #networks:
+    #  - traefiknet
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -25,7 +25,8 @@ services:
       traefik.http.routers.esphome.entrypoints: web
       traefik.docker.network: traifiknet
       #traefik.http.routers.esphome.rule: HostRegexp(`{any:.+}`)
-      traefik.http.services.esphome.loadbalancer.server.port: 6052
+      http.services.esphome.loadBalancer.servers: url=http://esphome.home.arpa:6052
+      #traefik.http.services.esphome.loadbalancer.server.port: 6052
 
 volumes:
   esphome:
