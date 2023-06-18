@@ -5,6 +5,14 @@ networks:
     name: traefiknet
 
 services:
+  cloudflared:
+    image: cloudflare/cloudflared
+    container_name: cloudflare-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+
   sonarr:
     image: ghcr.io/linuxserver/sonarr:latest
     container_name: dnloads-sonarr
