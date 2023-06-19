@@ -122,6 +122,24 @@ services:
       - "traefik.http.routers.overseerr.rule=Host(`overseerr.home.arpa`)"
       - "traefik.http.routers.overseerr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
+
+
+  ombi:
+    image: ghcr.io/linuxserver/ombi:latest
+    container_name: dnloads-ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+#      - BASE_URL=/ombi #optional
+#      - VIRTUAL_HOST=dc-o.loginet.com
+    volumes:
+      - ombi:/config
+    ports:
+      - 3579:3579
+    restart: unless-stopped
+
+
   syncthing:
     image: syncthing/syncthing
     container_name: dnloads-syncthing
@@ -175,6 +193,12 @@ volumes:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/dnloads/overseerr"
+  
+  ombi:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/dnloads/ombi"  
   
   syncthing:
     driver_opts:
