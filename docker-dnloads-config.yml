@@ -180,7 +180,7 @@ volumes:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.22,nfsvers=4,soft,nolock,rw"
-      device: ":/Raid01/media"
+      device: ":/mnt/Raid01/media"
   
   lidarr:
     driver_opts:
