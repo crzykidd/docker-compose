@@ -49,7 +49,7 @@ services:
       - "traefik.docker.network=traifiknet"
     volumes:
       - radarr:/config
-      - fs02-media-movies:/mnt/fs02-media-movies
+      - fs02-media:/mnt/fs02-media
     environment:
       - TZ=America/Los_Angeles
       - PUID=1000
@@ -176,11 +176,11 @@ volumes:
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/dnloads/radarr/config"
   
-  fs02-media-movies:
+  fs02-media:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.22,nfsvers=4,soft,nolock,rw"
-      device: ":/volume1/media/movies"
+      device: ":/volume1/media"
   
   lidarr:
     driver_opts:
