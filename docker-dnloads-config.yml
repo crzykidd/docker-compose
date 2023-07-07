@@ -29,7 +29,7 @@ services:
       #- flame.icon=icon-name # optional, default is "docker"
     volumes:
       - sonarr:/config
-      - /mnt/fs02-media:/mnt/fs02-media
+      - fs02-media:/mnt/fs02-media
       - /etc/localtime:/etc/localtime:ro
     environment:
       - TZ="America/Los_Angeles"
