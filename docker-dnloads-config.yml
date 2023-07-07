@@ -180,7 +180,7 @@ volumes:
   fs02-media:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.55.22,vers=4.1,soft,nolock,rw"
+      o: "addr=192.168.55.22,vers=4,soft,nolock,rw"
       device: ":/volume1/media"
   
   tnas01-media:
