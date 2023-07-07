@@ -174,7 +174,7 @@ volumes:
   radarr:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.55.21,nfsvers=4,hard"
+      o: "addr=192.168.55.21,vers=4.1,hard"
       device: ":/volume1/docker-data/dnloads/radarr/config"
   
   fs02-media:
@@ -192,7 +192,7 @@ volumes:
   lidarr:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.55.21,nfsvers=4,hard"
+      o: "addr=192.168.55.21,nfsvers=4.1,hard"
       device: ":/volume1/docker-data/dnloads/lidarr/config"
 
   prowlarr:
