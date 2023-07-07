@@ -50,6 +50,7 @@ services:
     volumes:
       - radarr:/config
       - fs02-media:/mnt/fs02-media
+      - tnas01-media:/mnt/tnas01-media
     environment:
       - TZ=America/Los_Angeles
       - PUID=1000
@@ -182,6 +183,12 @@ volumes:
       o: "addr=192.168.55.22,nfsvers=4,soft,nolock,rw"
       device: ":/volume1/media"
   
+  tnas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.24,nfsvers=4,soft,nolock,rw"
+      device: ":/mnt/Raid01/media"
+
   lidarr:
     driver_opts:
       type: "nfs"
