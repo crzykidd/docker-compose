@@ -48,7 +48,7 @@ services:
       - "traefik.http.routers.radarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
     volumes:
-      - radarr:/config
+      - /local-data/dnloads/radarr/config:/config
       - fs02-media:/mnt/fs02-media
       - tnas01-media:/mnt/tnas01-media
     environment:
@@ -70,7 +70,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - lidarr:/config
+      - /local-data/dnloads/lidarr/config:/config
       - /mnt/fs02-media:/fs02-media #optional
       - /mnt/leda_complete/tor-music-archive:/tor-music-archive #optional
     ports:
@@ -92,7 +92,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - prowlarr:/config
+      - /local-data/dnloads/prowlarr/config:/config
     ports:
       - 9696:9696
     restart: unless-stopped
@@ -114,7 +114,7 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - overseerr:/app/config
+      - /local-data/dnloads/overseerr:/app/config
     restart: unless-stopped
     networks:
       - traefiknet
@@ -135,7 +135,7 @@ services:
 #      - BASE_URL=/ombi #optional
 #      - VIRTUAL_HOST=dc-o.loginet.com
     volumes:
-      - ombi:/config
+      - /local-data/dnloads/ombi:/config
     ports:
       - 3579:3579
     restart: unless-stopped
@@ -165,17 +165,6 @@ services:
       - "traefik.docker.network=traifiknet"
 
 volumes:
-  sonarr:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,vers=4.1,hard"
-      device: ":/volume1/docker-data/dnloads/sonarr/config"
-
-  radarr:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,vers=4.1,hard"
-      device: ":/volume1/docker-data/dnloads/radarr/config"
   
   fs02-media:
     driver_opts:
@@ -189,30 +178,7 @@ volumes:
       o: "addr=192.168.55.24,vers=4,soft,nolock,rw"
       device: ":/mnt/Raid01/media"
 
-  lidarr:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,vers=4.1,hard"
-      device: ":/volume1/docker-data/dnloads/lidarr/config"
 
-  prowlarr:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,vers=4.1,hard"
-      device: ":/volume1/docker-data/dnloads/prowlarr/config"
-
-  overseerr:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,vers=4.1,hard"
-      device: ":/volume1/docker-data/dnloads/overseerr"
-  
-  ombi:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,vers=4.1,hard"
-      device: ":/volume1/docker-data/dnloads/ombi"  
-  
   syncthing:
     driver_opts:
       type: "nfs"
