@@ -163,6 +163,21 @@ services:
       - "traefik.http.routers.syncthing.entrypoints=web"
       - "traefik.docker.network=traifiknet"
 
+services:
+  headphones:
+    image: lscr.io/linuxserver/headphones:latest
+    container_name: headphones
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /local-data/dnloads/headphones/config:/config
+      - /local-data/dnloads/headphones/downloads:/downloads
+      - /mnt/fs02-media/Music_New:/music
+    ports:
+      - 8181:8181
+    restart: unless-stopped
 
 volumes:
   
