@@ -72,7 +72,7 @@ services:
     volumes:
       - /local-data/dnloads/lidarr/config:/config
       - /mnt/fs02-media:/fs02-media #optional
-      - /mnt/leda_complete/tor-music-archive:/tor-music-archive #optional
+      - /mnt/luna_complete/tor-music-archive:/tor-music-archive #optional
     ports:
       - 8686:8686
     restart: unless-stopped
