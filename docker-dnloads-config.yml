@@ -163,7 +163,7 @@ services:
       - "traefik.http.routers.syncthing.entrypoints=web"
       - "traefik.docker.network=traifiknet"
 
-services:
+
   headphones:
     image: lscr.io/linuxserver/headphones:latest
     container_name: headphones
