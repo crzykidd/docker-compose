@@ -124,7 +124,6 @@ services:
       - "traefik.http.routers.overseerr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
 
-
   ombi:
     image: ghcr.io/linuxserver/ombi:latest
     container_name: dnloads-ombi
@@ -163,6 +162,20 @@ services:
       - "traefik.http.routers.syncthing.rule=Host(`syncthing.home.arpa`)"
       - "traefik.http.routers.syncthing.entrypoints=web"
       - "traefik.docker.network=traifiknet"
+
+  nzbhydra2:
+    image: lscr.io/linuxserver/nzbhydra2:latest
+    container_name: dnloads-nzbhydra2
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /local-data/dnloads/nzbhydra2/config:/config
+      - /local-data/dnloads/nzbhydra2/download:/downloads
+    ports:
+      - 5076:5076
+    restart: unless-stopped
 
 volumes:
   
