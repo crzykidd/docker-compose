@@ -175,6 +175,8 @@ services:
       - /local-data/dnloads/nzbhydra2/download:/downloads
     ports:
       - 5076:5076
+    networks:
+      - traefiknet
     restart: unless-stopped
 
 volumes:
