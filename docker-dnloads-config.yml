@@ -170,13 +170,28 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Los_Angeles
     volumes:
       - /local-data/dnloads/headphones/config:/config
       - /local-data/dnloads/headphones/downloads:/downloads
       - /mnt/fs02-media/Music_New:/music
     ports:
       - 8181:8181
+    restart: unless-stopped
+
+  beets:
+    image: lscr.io/linuxserver/beets:latest
+    container_name: beets
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - local-data/dnloads/beets/config>:/config
+      - /mnt/fs02-media:/music
+      - /mnt/fs02-media/Music_New:/downloads
+    ports:
+      - 8337:8337
     restart: unless-stopped
 
 volumes:
