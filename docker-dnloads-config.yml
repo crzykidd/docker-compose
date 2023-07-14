@@ -187,7 +187,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - /local-data/dnloads/beets/config>:/config
+      - /local-data/dnloads/beets/config:/config
       - /mnt/fs02-media:/music
       - /mnt/fs02-media/Music_New:/downloads
     ports:
