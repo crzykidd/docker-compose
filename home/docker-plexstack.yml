@@ -1,0 +1,45 @@
+version: '3'
+services:
+  plex:
+    image: plexinc/pms-docker:plexpass
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - PLEX_CLAIM="${PLEX_CLAIM}"
+    volumes:
+      - /local-data/plex/config:/config
+      - fs02-media:/mnt/fs02-media
+      - tnas01-media:/mnt/tnas01-media
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: host
+    restart: always
+
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /local-data/plex/tautulli/config:/config
+      - /local-data/plex/config/Library/Application Support/Plex Media Server/Logs:/logs:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8181:8181
+    restart: unless-stopped
+
+volumes:
+  fs02-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.22,vers=4,soft,nolock,rw"
+      device: ":/volume1/media"
+  
+  tnas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.24,vers=4,soft,nolock,rw"
+      device: ":/mnt/Raid01/media"

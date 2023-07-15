@@ -1,0 +1,17 @@
+#!/bin/bash
+####################################
+#
+# Backup script.
+#
+####################################
+
+# Backup dnloads directories from local machine to fs02/docker-data/backups/dnloads
+
+rsync -avx --delete  /local-data/dnloads/ /docker-data/backups/dnloads
+
+url="https://discord.com/api/webhooks/1127102415477420052/P6UHUtjagt3JjWJYzUbmMyJnGoeUMyNalElTbSd7clqSKRed-mjlc3kAabExMr7BS5Tq"
+
+totalseconds=`echo $SECONDS`
+message="Backup of dnloads took $totalseconds seconds"
+
+curl -H "Content-Type: application/json" -X POST -d '{"username": "docker12", "content":"'"${message}"'"}'  $url
