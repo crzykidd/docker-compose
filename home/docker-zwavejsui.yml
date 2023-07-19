@@ -10,8 +10,8 @@ services:
     restart: always
     tty: true
     stop_signal: SIGINT
-#    devices:
-#      - '/dev/ttyUSB0:/dev/zwave'
+    devices:
+      - '/dev/ttyUSB0:/dev/zwave'
     volumes:
       - zwave-js-ui:/usr/src/app/store
       
