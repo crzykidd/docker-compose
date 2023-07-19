@@ -28,4 +28,4 @@ volumes:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.50.21,vers=4,soft,nolock,rw"
-      device: ":/volume1/docker-data/zwave-js-ui/store"
+      device: ":/volume1/docker-data/zwave-js-ui/store/"
