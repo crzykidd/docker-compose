@@ -1,0 +1,31 @@
+version: '3'
+
+networks:
+  traefiknet:
+    name: traefiknet
+
+services:
+  zwavejsui:
+    image: zwavejs/zwave-js-ui:latest
+    restart: always
+    tty: true
+    stop_signal: SIGINT
+    devices:
+      - '/dev/ttyUSB0:/dev/zwave'
+    volumes:
+      - zwave-js-ui:/usr/src/app/store
+      
+    ports:
+      - "8091:8091"
+      - "3000:3000"
+    networks:
+      - traefiknet
+
+
+volumes:
+  
+  zwave-js-ui:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.50.21,vers=4,soft,nolock,rw"
+      device: ":/volume1/docker-data/zwave-js-ui"
