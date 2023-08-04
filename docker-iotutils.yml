@@ -28,9 +28,30 @@ services:
       traefik.http.services.esphome.loadBalancer.server.url: http://esphome.home.arpa:6052
       traefik.http.services.esphome.loadbalancer.server.port: 6052
 
+libretiny-esphome:
+    container_name: iotutils-libretiny-esphome
+    image: ghcr.io/libretiny-eu/libretiny-esphome-docker:latest
+    ports:
+      - 6053:6052
+    #environment:
+    #  - ESPHOME_DASHBOARD_USE_PING=true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - libretiny-esphome:/config:rw
+    network_mode: host
+    #networks:
+    #  - traefiknet
+    restart: unless-stopped
+    
 volumes:
   esphome:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/docker-data/iotutils/esphome"
+
+  libretinyesphome:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/iotutils/libretiny-esphome"
