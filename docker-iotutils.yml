@@ -28,7 +28,7 @@ services:
       traefik.http.services.esphome.loadBalancer.server.url: http://esphome.home.arpa:6052
       traefik.http.services.esphome.loadbalancer.server.port: 6052
 
-libretiny-esphome:
+  libretiny-esphome:
     container_name: iotutils-libretiny-esphome
     image: ghcr.io/libretiny-eu/libretiny-esphome-docker:latest
     ports:
