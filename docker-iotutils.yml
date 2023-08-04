@@ -38,7 +38,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - libretiny-esphome:/config:rw
-    network_mode: host
+    
     #networks:
     #  - traefiknet
     restart: unless-stopped
