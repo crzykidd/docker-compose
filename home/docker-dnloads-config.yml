@@ -39,27 +39,27 @@ services:
 #      - '8989:8989'
 #    restart: unless-stopped
 
-  radarr:
-    image: ghcr.io/linuxserver/radarr:latest
-    container_name: dnloads-radarr
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.home.arpa`)"
-      - "traefik.http.routers.radarr.entrypoints=web"
-      - "traefik.docker.network=traifiknet"
-    volumes:
-      - /local-data/dnloads/radarr/config:/config
-      - fs02-media:/mnt/fs02-media
-      - tnas01-media:/mnt/tnas01-media
-    environment:
-      - TZ=America/Los_Angeles
-      - PUID=1000
-      - PGID=1000
-    ports:
-      - 7878:7878
-    restart: unless-stopped
-    networks:
-      - traefiknet
+#  radarr:
+#    image: ghcr.io/linuxserver/radarr:latest
+#    container_name: dnloads-radarr
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.radarr.rule=Host(`radarr.home.arpa`)"
+#      - "traefik.http.routers.radarr.entrypoints=web"
+#      - "traefik.docker.network=traifiknet"
+#    volumes:
+#      - /local-data/dnloads/radarr/config:/config
+#      - fs02-media:/mnt/fs02-media
+#      - tnas01-media:/mnt/tnas01-media
+#    environment:
+#      - TZ=America/Los_Angeles
+#      - PUID=1000
+#      - PGID=1000
+#    ports:
+#      - 7878:7878
+#    restart: unless-stopped
+#    networks:
+#      - traefiknet
 
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
