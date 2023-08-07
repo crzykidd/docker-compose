@@ -140,28 +140,28 @@ services:
     restart: unless-stopped
 
 
-  syncthing:
-    image: syncthing/syncthing
-    container_name: dnloads-syncthing
-    hostname: archive-syncthing
-    environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /mnt/fs02-media/working:/mnt/fs02-media-working
-      - syncthing:/var/syncthing
-    ports:
-      - 8384:8384
-      - 22000:22000/tcp
-      - 22000:22000/udp
-    restart: unless-stopped
-    networks:
-      - traefiknet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.syncthing.rule=Host(`syncthing.home.arpa`)"
-      - "traefik.http.routers.syncthing.entrypoints=web"
-      - "traefik.docker.network=traifiknet"
+#  syncthing:
+#    image: syncthing/syncthing
+#    container_name: dnloads-syncthing
+#    hostname: archive-syncthing
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#    volumes:
+#      - /mnt/fs02-media/working:/mnt/fs02-media-working
+#      - syncthing:/var/syncthing
+#    ports:
+#      - 8384:8384
+#      - 22000:22000/tcp
+#      - 22000:22000/udp
+#    restart: unless-stopped
+#    networks:
+#      - traefiknet
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.syncthing.rule=Host(`syncthing.home.arpa`)"
+#      - "traefik.http.routers.syncthing.entrypoints=web"
+#      - "traefik.docker.network=traifiknet"
 
 
   headphones:
