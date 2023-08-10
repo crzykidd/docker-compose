@@ -84,25 +84,25 @@ services:
       - "traefik.http.routers.lidarr.entrypoints=web"
       - "traefik.docker.network=traifiknet"
 
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:develop
-    container_name: dnloads-prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Los_Angeles
-    volumes:
-      - /local-data/dnloads/prowlarr/config:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-    networks:
-      - traefiknet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.home.arpa`)"
-      - "traefik.http.routers.prowlarr.entrypoints=web"
-      - "traefik.docker.network=traifiknet"
+#  prowlarr:
+#    image: lscr.io/linuxserver/prowlarr:develop
+#    container_name: dnloads-prowlarr
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=America/Los_Angeles
+#    volumes:
+#      - /local-data/dnloads/prowlarr/config:/config
+#    ports:
+#      - 9696:9696
+#    restart: unless-stopped
+#    networks:
+#      - traefiknet
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.home.arpa`)"
+#      - "traefik.http.routers.prowlarr.entrypoints=web"
+#      - "traefik.docker.network=traifiknet"
 
   overseerr:
     image: sctx/overseerr:latest
