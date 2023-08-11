@@ -104,25 +104,25 @@ services:
 #      - "traefik.http.routers.prowlarr.entrypoints=web"
 #      - "traefik.docker.network=traifiknet"
 
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: dnloads-overseerr
-    environment:
-      - LOG_LEVEL=debug
-      - TZ=America/Los_Angeles
-      - PORT=5055 #optional
-    ports:
-      - 5055:5055
-    volumes:
-      - /local-data/dnloads/overseerr:/app/config
-    restart: unless-stopped
-    networks:
-      - traefiknet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.overseerr.rule=Host(`overseerr.home.arpa`)"
-      - "traefik.http.routers.overseerr.entrypoints=web"
-      - "traefik.docker.network=traifiknet"
+#  overseerr:
+#    image: sctx/overseerr:latest
+#    container_name: dnloads-overseerr
+#    environment:
+#      - LOG_LEVEL=debug
+#      - TZ=America/Los_Angeles
+#      - PORT=5055 #optional
+#    ports:
+#      - 5055:5055
+#    volumes:
+#      - /local-data/dnloads/overseerr:/app/config
+#    restart: unless-stopped
+#    networks:
+#      - traefiknet
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.overseerr.rule=Host(`overseerr.home.arpa`)"
+#      - "traefik.http.routers.overseerr.entrypoints=web"
+#      - "traefik.docker.network=traifiknet"
 
   ombi:
     image: ghcr.io/linuxserver/ombi:latest
