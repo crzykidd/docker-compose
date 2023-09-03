@@ -33,8 +33,8 @@ services:
     image: ghcr.io/libretiny-eu/libretiny-esphome-docker:latest
     ports:
       - 6053:6052
-    #environment:
-    #  - ESPHOME_DASHBOARD_USE_PING=true
+    environment:
+      - ESPHOME_DASHBOARD_USE_PING=true
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - libretiny-esphome:/config:rw
