@@ -1,6 +1,6 @@
 version: '3'
 services:
-  homeassistant:
+  homeassistant: 
     container_name: home-assistant
     image: ghcr.io/home-assistant/home-assistant:stable
     environment:
