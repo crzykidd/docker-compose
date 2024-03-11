@@ -1,0 +1,15 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: home-assistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/manderse/docker/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/dbus:/run/dbus:ro
+    restart: always
+    network_mode: host
