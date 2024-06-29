@@ -19,10 +19,10 @@ services:
       # Define the network that should be used
       - "traefik.docker.network=proxy"
       # URL to reach this container
-      - "traefik.http.routers.hass.rule=Host(`hass.crzynet.com`)"
+      - "traefik.http.routers.home-assistant.rule=Host(`hass.crzynet.com`)"
       # Activation of TLS
-      - "traefik.http.routers.hass.tls=true"
+      - "traefik.http.routers.home-assistant.tls=true"
       # If port is different than 80, use the following service:
-      - "traefik.http.services.hass.loadbalancer.server.port=8123"
+      - "traefik.http.services.home-assistant.loadbalancer.server.port=8123"
 
 
