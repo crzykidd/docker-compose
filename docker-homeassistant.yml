@@ -1,5 +1,5 @@
 services:
-  homeassistant: 
+  homeassistant:
     container_name: home-assistant
     image: ghcr.io/home-assistant/home-assistant:stable
     environment:
@@ -11,7 +11,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /run/dbus:/run/dbus:ro
     restart: always
-    network_mode: host
+    networks:
+      macvlan-net:
+        ipv4_address: 192.168.51.20
+      proxy:
+    ports:
+      - "8123:8123"
+
     labels:
       # Enable this container to be mapped by traefik
       # For more information, see: https://docs.traefik.io/providers/docker/#exposedbydefault
@@ -19,10 +25,16 @@ services:
       # Define the network that should be used
       - "traefik.docker.network=proxy"
       # URL to reach this container
-      - "traefik.http.routers.home-assistant.rule=Host(`hass.crzynet.com`)"
+      - "traefik.http.routers.ha.rule=Host(`ha.crzynet.com`)"
       # Activation of TLS
-      - "traefik.http.routers.home-assistant.tls=true"
+      - "traefik.http.routers.ha.tls=true"
       # If port is different than 80, use the following service:
-      - "traefik.http.services.home-assistant.loadbalancer.server.port=8123"
+      - "traefik.http.services.ha.loadbalancer.server.port=8123"
 
+
+networks:
+  proxy:
+    external: true
+  macvlan-net:
+    external: true
 
