@@ -1,0 +1,33 @@
+services:
+  spoolman:
+    image: ghcr.io/donkie/spoolman:latest
+    restart: unless-stopped
+    volumes:
+      # Mount the host machine's ./data directory into the container's /home/app/.local/share/spoolman directory
+      - type: bind
+        source: ~/docker/spoolman/data # This is where the data will be stored locally. Could also be set to for example `source: /home/pi/printer_data/spoolman`.
+        target: /home/app/.local/share/spoolman # Do NOT change this line
+    ports:
+      # Map the host machine's port 7912 to the container's port 8000
+      - "7912:8000"
+    environment:
+      - TZ=america/los_angeles # Optional, defaults to UTC
+
+    labels:
+      # Enable this container to be mapped by traefik
+      # For more information, see: https://docs.traefik.io/providers/docker/#exposedbydefault
+      - "traefik.enable=true"
+      # Define the network that should be used
+      - "traefik.docker.network=proxy"
+      # URL to reach this container
+      - "traefik.http.routers.spoolman.rule=Host(`spoolman.crzynet.com`)"
+      # Activation of TLS
+      - "traefik.http.routers.spoolman.tls=true"
+      # If port is different than 80, use the following service:
+      - "traefik.http.services.spoolman.loadbalancer.server.port=8000"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
