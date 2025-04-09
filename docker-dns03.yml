@@ -8,5 +8,5 @@ services:
     environment:
       - DNS_SERVER_DOMAIN=home.arpa #The primary domain name used by this DNS Server to identify itself.
     volumes:
-      - /home/manderse/docker/dns01:/etc/dns
+      - /home/manderse/docker/dns03:/etc/dns
     restart: unless-stopped
