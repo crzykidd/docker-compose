@@ -1,0 +1,12 @@
+services:
+  dns01:
+    container_name: dns03
+    hostname: dns03
+    image: technitium/dns-server:latest
+    #Not running DHCP in this config but still used host mode
+    network_mode: "host"
+    environment:
+      - DNS_SERVER_DOMAIN=home.arpa #The primary domain name used by this DNS Server to identify itself.
+    volumes:
+      - /home/manderse/docker/dns01:/etc/dns
+    restart: unless-stopped
