@@ -1,0 +1,53 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      TZ: america/los_angeles
+      HOMEPAGE_ALLOWED_HOSTS: "*"
+      HOMEPAGE_VAR_SONARR_API: ${HOMEPAGE_VAR_SONARR_API}
+      HOMEPAGE_VAR_RADARR_API: ${HOMEPAGE_VAR_RADARR_API}
+      HOMEPAGE_VAR_PROWLARR_API: ${HOMEPAGE_VAR_PROWLARR_API}
+      HOMEPAGE_VAR_PIHOLE_API: ${HOMEPAGE_VAR_PIHOLE_API}
+      HOMEPAGE_VAR_PLEX_TOKEN: ${HOMEPAGE_VAR_PLEX_TOKEN}
+      HOMEPAGE_VAR_OMBI_API: ${HOMEPAGE_VAR_OMBI_API}
+      HOMEPAGE_VAR_OVERSEER_API: ${HOMEPAGE_VAR_OVERSEER_API}
+      HOMEPAGE_VAR_RUTORRENT_USER: ${HOMEPAGE_VAR_RUTORRENT_USER}
+      HOMEPAGE_VAR_RUTORRENT_PASSWORD: ${HOMEPAGE_VAR_RUTORRENT_PASSWORD}
+      HOMEPAGE_VAR_TNAS01_USERNAME: ${HOMEPAGE_VAR_TNAS01_USERNAME}
+      HOMEPAGE_VAR_TNAS01_PASSWORD: ${HOMEPAGE_VAR_TNAS01_PASSWORD}
+      HOMEPAGE_VAR_CLOUDFLARE_ACCOUNTID: ${HOMEPAGE_VAR_CLOUDFLARE_ACCOUNTID}
+      HOMEPAGE_VAR_CLOUDFLARE_TUNNELID: ${HOMEPAGE_VAR_CLOUDFLARE_TUNNELID}
+      HOMEPAGE_VAR_CLOUDFLARE_API_TOKEN: ${HOMEPAGE_VAR_CLOUDFLARE_API_TOKEN}
+      HOMEPAGE_VAR_GRAFANA_USERNAME: ${HOMEPAGE_VAR_GRAFANA_USERNAME}
+      HOMEPAGE_VAR_GRAFANA_PASSWORD: ${HOMEPAGE_VAR_GRAFANA_PASSWORD}
+      HOMEPAGE_VAR_PORTAINER_K3S_API: ${HOMEPAGE_VAR_PORTAINER_K3S_API}
+      HOMEPAGE_VAR_FS02_USERNAME: ${HOMEPAGE_VAR_FS02_USERNAME}
+      HOMEPAGE_VAR_FS02_PASSWORD: ${HOMEPAGE_VAR_FS02_PASSWORD}
+      HOMEPAGE_VAR_PORTAINER_40: ${HOMEPAGE_VAR_PORTAINER_40}
+      HOMEPAGE_VAR_OCTOPRINT_KEY: ${HOMEPAGE_VAR_OCTOPRINT_KEY}
+    ports:
+      - 3000:3000
+    volumes:
+      - homepage:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.homepage.rule=Host(`homepage.crzynet.com`)"
+      - "traefik.http.routers.homepage.tls=true"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+    networks:
+      - proxy    
+
+volumes:
+  homepage:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/k8s-configs/data/main-utils/homepage-config"
+
+networks:
+  proxy:
+    external: true
