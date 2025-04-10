@@ -22,3 +22,13 @@ services:
       traefik.http.services.esphome.loadbalancer.server.port: 6052
     networks:
       - proxy
+
+networks:
+  proxy:
+    external: true
+volumes:
+  esphome:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker-data/iotutils/esphome"      
