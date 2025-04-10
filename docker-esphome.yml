@@ -21,8 +21,8 @@ services:
       - "traefik.http.routers.esphome.tls=true"
       - "traefik.http.services.esphome.loadbalancer.server.port=6052" 
 
-    networks:
-      - proxy
+  #  networks:
+  #    - proxy
 
 #networks:
 #  proxy:
