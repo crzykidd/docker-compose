@@ -6,7 +6,6 @@ services:
       - 6052:6052
     environment:
       - TZ=america/los_angeles
-      - VIRTUAL_HOST=esphome.crzynet.com
 #      - ESPHOME_DASHBOARD_USE_PING=true
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -15,11 +14,12 @@ services:
     privileged: true
 
     labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.esphome.rule: Host(`esphome.crzynet.com`)
-      traefik.http.routers.esphome.tls: true
-      traefik.http.services.esphome.loadbalancer.server.port: 6052
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.esphome.rule=Host(`esphome.crzynet.com`)"
+      - "traefik.http.routers.esphome.tls=true"
+      - "traefik.http.services.esphome.loadbalancer.server.port=6052" 
+
     networks:
       - proxy
 
