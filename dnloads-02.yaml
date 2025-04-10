@@ -1,0 +1,118 @@
+#Service running in this stack:
+# Sonarr, Prowlarr, Radarr, Syncthing
+# local data, backup to fs02/media/k8sbackup in app
+services:
+  dnloads-sonarr:
+  # Sonarr backsup it's config to fs02/media/k8sbackup through the app
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: dnloads-sonarr
+    hostname: dnloads-sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - fs02-media:/mnt/fs02-media
+      - tnas01-media:/mnt/tnas01-media
+      - /var/docker/dnloads/sonarr:/config
+  
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.crzynet.com`)"
+      - "traefik.http.routers.sonarr.tls=true"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989" 
+
+  dnloads-prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: dnloads-prowlarr
+    hostname: dnloads-prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /var/docker/dnloads/prowlarr:/config
+      - fs02-media:/mnt/fs02-media      
+  
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.crzynet.com`)"
+      - "traefik.http.routers.prowlarr.tls=true"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+
+  dnloads-radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: dnloads-radarr
+    hostname: dnloads-radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - fs02-media:/mnt/fs02-media
+      - tnas01-media:/mnt/tnas01-media
+      - /var/docker/dnloads/radarr:/config
+  
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.crzynet.com`)"
+      - "traefik.http.routers.radarr.tls=true"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878" 
+  syncthing:
+    image: syncthing/syncthing
+    container_name: dnloads-syncthing
+    hostname: dnloads-syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - fs02-media:/mnt/fs02-media
+      - syncthing-data:/var/syncthing
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.syncthing.rule=Host(`syncthing.crzynet.com`)"
+      - "traefik.http.routers.syncthing.tls=true"
+      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"  
+networks:
+  proxy:
+    external: true
+volumes:
+  fs02-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.22,nfsvers=4,hard"
+      device: ":/volume1/media"      
+  tnas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.24,nfsvers=4,hard"
+      device: ":/mnt/Raid01/media"
+  syncthing-data:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,vers=4.1,hard"
+      device: ":/volume1/docker-data/dnloads/syncthing/config"  
+
