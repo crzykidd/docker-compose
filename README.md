@@ -2,8 +2,6 @@
 
 This is my docker compose library.   I use [Komodo](https://github.com/moghtech/komodo) to manage everything.  
 
-
-
 Each server has a unique machinename-utils docker compose.   This is all the base things for this machine and includes things like:
 
 * traefik

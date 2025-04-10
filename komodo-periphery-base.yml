@@ -1,0 +1,34 @@
+####################################
+# 🦎 KOMODO COMPOSE - PERIPHERY 🦎 #
+####################################
+
+## This compose file will deploy:
+##   1. Komodo Periphery
+
+services:
+  periphery:
+    image: ghcr.io/moghtech/komodo-periphery:latest
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    logging:
+      driver: local
+    ports:
+      - 8120:8120
+
+    environment:
+      PERIPHERY_REPO_DIR: /home/manderse/docker/komodo/data/repos
+      PERIPHERY_STACK_DIR: /home/manderse/docker/komodo/data/stacks
+      PERIPHERY_SSL_KEY_FILE: /home/manderse/docker/komodo/data/ssl/key.pem
+      PERIPHERY_SSL_CERT_FILE: /home/manderse/docker/komodo/data/ssl/cert.pem
+      PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
+    volumes:
+      ## Mount external docker socket
+      - /var/run/docker.sock:/var/run/docker.sock
+      ## Allow Periphery to see processes outside of container
+      - /proc:/proc
+      ## Specify the Periphery agent root directory.
+      ## Must be the same inside and outside the container,
+      ## or docker will get confused. See https://github.com/moghtech/komodo/discussions/180.
+      ## Default: /etc/komodo.
+      - /home/manderse/docker/komodo/data:/home/manderse/docker/komodo/data
