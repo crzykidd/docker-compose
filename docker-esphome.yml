@@ -2,8 +2,8 @@ services:
   esphome:
     container_name: esphome
     image: esphome/esphome
-    ports:
-      - 6052:6052
+#    ports:
+#      - 6052:6052
     network_mode: "host"
     environment:
       - TZ=america/los_angeles
@@ -24,9 +24,9 @@ services:
     networks:
       - proxy
 
-networks:
-  proxy:
-    external: true
+#networks:
+#  proxy:
+#    external: true
 volumes:
   esphome:
     driver_opts:
