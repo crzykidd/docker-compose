@@ -4,7 +4,7 @@ services:
     image: esphome/esphome
     ports:
       - 6052:6052
-    network_mode: "host"
+    #network_mode: "host"
     environment:
       - TZ=america/los_angeles
 #      - ESPHOME_DASHBOARD_USE_PING=true
