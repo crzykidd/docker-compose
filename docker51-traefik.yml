@@ -27,12 +27,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http" # restricts dashboard to internal entrypoint
-      - "traefik.http.routers.traefik.rule=Host(`docker50.crzynet.com`)" # if you want a internal domain, get the wildcard cert for it and then choos traefik-dashboard.home.yourdomain.co.uk or what you want      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:password-hash"
+      - "traefik.http.routers.traefik.rule=Host(`docker51.crzynet.com`)" # if you want a internal domain, get the wildcard cert for it and then choos traefik-dashboard.home.yourdomain.co.uk or what you want      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:password-hash"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
       - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
       - "traefik.http.routers.traefik-secure.entrypoints=https"
-      - "traefik.http.routers.traefik-secure.rule=Host(`docker50.crzynet.com`)" # if you want a internal domain, get the wildcard cert for it and then choos traefik-dashboard.home.yourdomain.co.uk or what you want
+      - "traefik.http.routers.traefik-secure.rule=Host(`docker51.crzynet.com`)" # if you want a internal domain, get the wildcard cert for it and then choos traefik-dashboard.home.yourdomain.co.uk or what you want
       - "traefik.http.routers.traefik-secure.tls=true"
       - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
       - "traefik.http.routers.traefik-secure.tls.domains[1].main=crzynet.com" #if you use the .home.yourdomain.co.uk entry you have to change the [0] into [1]
