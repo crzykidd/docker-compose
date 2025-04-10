@@ -7,7 +7,7 @@ services:
     #network_mode: "host"
     environment:
       - TZ=america/los_angeles
-#      - ESPHOME_DASHBOARD_USE_PING=true
+      - ESPHOME_DASHBOARD_USE_PING=true
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - esphome:/config:rw
