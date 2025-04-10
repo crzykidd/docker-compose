@@ -20,10 +20,10 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/mander/docker/traefik-data/traefik.yml:/traefik.yml:ro
-      - /home/mander/docker/traefik-data/acme.json:/acme.json
-      - /home/mander/docker/traefik-data/config.yml:/config.yml:ro
-      - /home/mander/docker/traefik-data/logs:/var/log/traefik
+      - /home/manderse/docker/traefik-data/traefik.yml:/traefik.yml:ro
+      - /home/manderse/docker/traefik-data/acme.json:/acme.json
+      - /home/manderse/docker/traefik-data/config.yml:/config.yml:ro
+      - /home/manderse/docker/traefik-data/logs:/var/log/traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http" # restricts dashboard to internal entrypoint
