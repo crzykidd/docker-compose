@@ -99,7 +99,6 @@ services:
 
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
-    image: lscr.io/linuxserver/lidarr:1.1.1-nightly
     container_name: dnloads-lidarr
     environment:
       - PUID=1000
