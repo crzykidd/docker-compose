@@ -57,7 +57,7 @@ services:
       - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
       - QUEUE_CONNECTION= #optional
     volumes:
-      - booksmart-:/config
+      - bookstack-:/config
     ports:
       - 6875:80
     restart: unless-stopped
