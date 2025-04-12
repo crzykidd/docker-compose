@@ -57,7 +57,7 @@ services:
       - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
       - QUEUE_CONNECTION= #optional
     volumes:
-      - bookstack:/config
+      - /var/docker/bookstack:/config
     ports:
       - 6875:80
     restart: unless-stopped
@@ -73,12 +73,7 @@ volumes:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/k8s-configs/data/main-utils/homepage-config"
-
-  bookstack:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.55.21,nfsvers=4,hard"
-      device: ":/volume1/docker/data/bookstack"
+ 
 
 networks:
   proxy:
