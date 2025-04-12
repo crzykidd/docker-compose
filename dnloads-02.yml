@@ -107,7 +107,7 @@ services:
     volumes:
       - /var/docker/dnloads/lidarr/config:/config
       - fs02-media:/fs02-media #optional
-#      - /mnt/luna/complete/tor-music-archive:/sshfsluna
+      - sshvolume:/mnt/sshfswhatbox
  
     ports:
       - 8686:8686
