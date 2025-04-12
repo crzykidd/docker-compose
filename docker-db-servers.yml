@@ -38,3 +38,6 @@ services:
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=3000"
     networks:
       - proxy    
+networks:
+  proxy:
+    external: true      
