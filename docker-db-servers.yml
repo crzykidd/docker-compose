@@ -1,0 +1,32 @@
+---
+services:
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: mariadb01
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} 
+      #use mysqladmin -u root password newpass to set password after first run
+    volumes:
+      - /var/docker/mariadb01/config:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+
+
+  phpmyadmin:
+    image: lscr.io/linuxserver/phpmyadmin:latest
+    container_name: phpmyadmin01
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - PMA_ARBITRARY=1 #optional
+      #- PMA_ABSOLUTE_URI=https://phpmyadmin.example.com #optional
+    volumes:
+      - /var/docker/phpmyadmin01/config:/config
+    ports:
+      - 8080:80
+    restart: unless-stopped
