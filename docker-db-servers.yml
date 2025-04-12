@@ -18,7 +18,7 @@ services:
 
   phpmyadmin:
     image: lscr.io/linuxserver/phpmyadmin:latest
-    container_name: phpmyadmin01
+    container_name: phpmyadmin
     environment:
       - PUID=1000
       - PGID=1000
@@ -30,3 +30,11 @@ services:
     ports:
       - 8080:80
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.crzynet.com`)"
+      - "traefik.http.routers.phpmyadmin.tls=true"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=3000"
+    networks:
+      - proxy    
