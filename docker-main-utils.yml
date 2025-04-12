@@ -41,12 +41,44 @@ services:
     networks:
       - proxy    
 
+  bookstack:
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=america/los_angeles
+      - APP_URL=${BOOKSTACK_APP_URL}
+      - APP_KEY=${BOOKSTACK_APP_KEY}
+      - DB_HOST=${BOOKSTACK_DB_HOST}
+      - DB_PORT=3306
+      - DB_USERNAME=${BOOKSTACK_DB_USERNAME}
+      - DB_PASSWORD=${BOOKSTACK_DB_PASSWORD}
+      - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
+      - QUEUE_CONNECTION= #optional
+    volumes:
+      - booksmart-:/config
+    ports:
+      - 6875:80
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.bookstack.rule=Host(`bookstack.crzynet.com`)"
+      - "traefik.http.routers.bookstack.tls=true"
+      - "traefik.http.services.bookstack.loadbalancer.server.port=6875"    
 volumes:
   homepage:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.55.21,nfsvers=4,hard"
       device: ":/volume1/k8s-configs/data/main-utils/homepage-config"
+
+  booksmart:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker/data/bookstack"
 
 networks:
   proxy:
