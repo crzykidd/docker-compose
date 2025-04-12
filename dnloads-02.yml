@@ -107,7 +107,9 @@ services:
     volumes:
       - /var/docker/dnloads/lidarr/config:/config
       - fs02-media:/fs02-media #optional
+      # read details in bookstack on how to create the sshvolume.
       - sshvolume:/mnt/sshfswhatbox
+
  
     ports:
       - 8686:8686
