@@ -130,6 +130,11 @@ networks:
   proxy:
     external: true
 volumes:
+  sshfsdata:
+    driver: vieux/sshfs:latest
+    driver_opts:
+      sshcmd: "crzykidd@vanilla.whatbox.ca:/home/crzykidd/complete/ar-music"
+      allow_other: ""
   fs02-media:
     driver_opts:
       type: "nfs"
