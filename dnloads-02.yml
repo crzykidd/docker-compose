@@ -96,6 +96,35 @@ services:
       - "traefik.http.routers.syncthing.rule=Host(`syncthing.crzynet.com`)"
       - "traefik.http.routers.syncthing.tls=true"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"  
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    image: lscr.io/linuxserver/lidarr:1.1.1-nightly
+    container_name: dnloads-lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /var/docker/dnloads/lidarr/config:/config
+      - fs02-media:/fs02-media #optional
+#      - /mnt/luna/complete/tor-music-archive:/sshfsluna
+ 
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.lidarr.rule=Host(`lidarr.crzynet.com`)"
+      - "traefik.http.routers.lidarr.tls=true"
+      - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
+
+
+
+
 networks:
   proxy:
     external: true
