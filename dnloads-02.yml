@@ -108,7 +108,7 @@ services:
       - /var/docker/dnloads/lidarr/config:/config
       - fs02-media:/fs02-media #optional
       # read details in bookstack on how to create the sshvolume.
-      - sshfsdata:/mnt/sshfswhatbox
+      - sshfsdata:/home/crzykidd/complete/ar-music
 
  
     ports:
