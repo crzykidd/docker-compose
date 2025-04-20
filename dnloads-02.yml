@@ -134,6 +134,8 @@ services:
     ports:
       - 3579:3579
     restart: unless-stopped
+    networks:
+      - proxy    
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
