@@ -109,8 +109,6 @@ services:
       - fs02-media:/fs02-media #optional
       # read details in bookstack on how to create the sshvolume.
       - sshfsdata:/home/crzykidd/complete/ar-music
-
- 
     ports:
       - 8686:8686
     restart: unless-stopped
@@ -123,7 +121,25 @@ services:
       - "traefik.http.routers.lidarr.tls=true"
       - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
 
-
+  ombi:
+    image: lscr.io/linuxserver/ombi:latest
+    container_name: dnloads-ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      #- TZ=Etc/UTC
+      - BASE_URL=/ #optional
+    volumes:
+      - /var/docker/dnloads/ombi:/config
+    ports:
+      - 3579:3579
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ar-ombi.rule=Host(`ar-ombi.crzynet.com`)"
+      - "traefik.http.routers.ar-ombi.tls=true"
+      - "traefik.http.services.ar-ombi.loadbalancer.server.port=8686"    
 
 
 networks:
