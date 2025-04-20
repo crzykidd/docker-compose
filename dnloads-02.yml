@@ -139,7 +139,7 @@ services:
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.ar-ombi.rule=Host(`ar-ombi.crzynet.com`)"
       - "traefik.http.routers.ar-ombi.tls=true"
-      - "traefik.http.services.ar-ombi.loadbalancer.server.port=8686"    
+      - "traefik.http.services.ar-ombi.loadbalancer.server.port=3579"    
 
 
 networks:
