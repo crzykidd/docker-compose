@@ -128,7 +128,7 @@ services:
       - PUID=1000
       - PGID=1000
       #- TZ=Etc/UTC
-      - BASE_URL=/ #optional
+      #- BASE_URL=/ #optional
     volumes:
       - /var/docker/dnloads/ombi:/config
     ports:
