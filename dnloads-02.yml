@@ -106,9 +106,9 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - /var/docker/dnloads/lidarr/config:/config
-      - fs02-media:/fs02-media #optional
+      - fs02-media:/fs02-media
       # read details in bookstack on how to create the sshvolume.
-      - sshfsdata:/home/crzykidd/complete/ar-music
+      #- sshfsdata:/home/crzykidd/complete/ar-music
     ports:
       - 8686:8686
     restart: unless-stopped
@@ -143,16 +143,38 @@ services:
       - "traefik.http.routers.ar-ombi.tls=true"
       - "traefik.http.services.ar-ombi.loadbalancer.server.port=3579"    
 
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: dnloads-bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      #- TZ=Etc/UTC
+    volumes:
+      - /var/docker/dnloads/bazarr:/config
+      - fs02-media:/mnt/fs02-media
+      - tnas01-media:/mnt/tnas01-media
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    networks:
+      - proxy    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.crzynet.com`)"
+      - "traefik.http.routers.bazarr.tls=true"
+      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"        
 
 networks:
   proxy:
     external: true
 volumes:
-  sshfsdata:
-    driver: vieux/sshfs:latest
-    driver_opts:
-      sshcmd: "crzykidd@vanilla.whatbox.ca:/home/crzykidd/complete/ar-music"
-      allow_other: ""
+#  sshfsdata:
+#    driver: vieux/sshfs:latest
+#    driver_opts:
+#      sshcmd: "crzykidd@vanilla.whatbox.ca:/home/crzykidd/complete/ar-music"
+#      allow_other: ""
   fs02-media:
     driver_opts:
       type: "nfs"
