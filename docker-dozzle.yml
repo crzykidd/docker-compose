@@ -17,3 +17,5 @@ services:
       - "cloudflare.tunnel.service: http://dozzle:8080"
     networks:
       - proxy      
+networks:
+  proxy:      
