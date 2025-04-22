@@ -14,7 +14,7 @@ services:
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080" 
       - "cloudflare.tunnel.enable=true"
       - "cloudflare.tunnel.hostname=ar-dozzle.crzynet.com"
-      - "cloudflare.tunnel.service: http://dozzle:8080"
+      - "cloudflare.tunnel.service=http://dozzle:8080"
     networks:
       - proxy      
 networks:
