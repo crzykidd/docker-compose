@@ -1,0 +1,27 @@
+services:
+  dockflare:
+    image: alplat/dockflare:stable
+    container_name: dockflare
+    restart: unless-stopped
+    ports:
+      - "5000:5000"  # Web UI port
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.dockflare.rule=Host(`dockflare51.crzynet.com`)"
+      - "traefik.http.routers.dockflare.tls=true"
+      - "traefik.http.services.dockflare.loadbalancer.server.port=5000"  
+    environment:
+      - CF_API_TOKEN=${CF_API_TOKEN}
+      - CF_ACCOUNT_ID=${CF_ACCOUNT_ID}
+      - CF_ZONE_ID=${CF_ZONE_ID}
+      - TUNNEL_NAME=${TUNNEL_NAME}
+      - GRACE_PERIOD_SECONDS=28800  # 8 hours before removing rules after container stops
+      - LABEL_PREFIX=cloudflare.tunnel  # Prefix for Docker labels
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Required to monitor Docker events
+      - /var/docker/dockflare:/app/data  # Persistent storage for state
+    networks:
+      - proxy  
+networks:
+  proxy:
