@@ -16,12 +16,14 @@ services:
       - CF_ACCOUNT_ID=${CF_ACCOUNT_ID}
       - CF_ZONE_ID=${CF_ZONE_ID}
       - TUNNEL_NAME=${TUNNEL_NAME}
+      - CLOUDFLARED_NETWORK_NAME=${CLOUDFLARED_NETWORK_NAME}
       - GRACE_PERIOD_SECONDS=28800  # 8 hours before removing rules after container stops
       - LABEL_PREFIX=cloudflare.tunnel  # Prefix for Docker labels
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro  # Required to monitor Docker events
       - /var/docker/dockflare:/app/data  # Persistent storage for state
     networks:
-      - proxy  
+      - proxy
+
 networks:
   proxy:

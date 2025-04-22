@@ -71,6 +71,10 @@ services:
       - "traefik.http.routers.bookstack.rule=Host(`bookstack.crzynet.com`)"
       - "traefik.http.routers.bookstack.tls=true"
       - "traefik.http.services.bookstack.loadbalancer.server.port=80"    
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=ar-bookstack.crzynet.com"
+      - "cloudflare.tunnel.service: http://bookstack:6875"
+
     networks:
       - proxy    
 
