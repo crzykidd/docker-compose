@@ -27,8 +27,8 @@ services:
       #- PMA_ABSOLUTE_URI=https://phpmyadmin.example.com #optional
     volumes:
       - /var/docker/phpmyadmin01/config:/config
-    ports:
-      - 8080:80
+#    ports:
+#      - 8080:80
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
