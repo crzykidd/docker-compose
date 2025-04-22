@@ -1,0 +1,17 @@
+services:
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.dozzle.rule=Host(`ar-dozzle.crzynet.com`)"
+      - "traefik.http.routers.dozzle.tls=true"
+      - "traefik.http.services.dozzle.loadbalancer.server.port=8080" 
+
+    networks:
+      - proxy      
