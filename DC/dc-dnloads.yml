@@ -1,0 +1,179 @@
+services:
+#  heimdall:
+#    image: lscr.io/linuxserver/heimdall
+#    container_name: dnloads-heimdall
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=America/Los_Angeles
+#    volumes:
+#      - /home/mander/docker/dnloads/heimdall/config:/config
+#    ports:
+#      - 8080:80
+#      - 8443:443
+#    restart: unless-stopped
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    ports:
+      - 3002:3000
+    volumes:
+      - /home/mander/docker/dnloads/homepage:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
+    environment:
+      - HOMEPAGE_VAR_SONARR_API: ${HOMEPAGE_VAR_SONARR_API}
+      - HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS} 
+
+#  dashy:
+#    image: lissy93/dashy
+#    container_name: Dashy
+    # Pass in your config file below, by specifying the path on your host machine
+#    volumes:
+#       - /home/mander/docker/dnloads/dashy/my-config.yml:/app/public/conf.yml
+#       - /home/mander/docker/dnloads/dashy/icons:/app/public/item-icons/icons
+#    ports:
+#      - 4000:80
+    # Set any environmental variables
+#    environment:
+#      - NODE_ENV=production
+    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+#      - UID=1000
+#      - GID=1000
+    # Specify restart policy
+#    restart: unless-stopped
+    # Configure healthchecks
+#    healthcheck:
+#      test: ['CMD', 'node', '/app/services/healthcheck']
+#      interval: 1m30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 40s
+
+  cloudflared:
+    image: cloudflare/cloudflared
+    container_name: cloudflare-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+
+
+#  jackett:
+#    container_name: dnloads-jackett
+#    image: ghcr.io/linuxserver/jackett:latest
+#    restart: unless-stopped
+#    ports:
+#      - '9117:9117'
+#    environment:
+#      - TZ=America/Los_Angeles
+#      - PUID=1000
+#      - PGID=1000
+#    volumes:
+#      - /home/mander/docker/dnloads/jackett/config:/config
+#      - /etc/localtime:/etc/localtime:ro
+
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: dnloads-bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/mander/docker/dnloads/bazarr/config:/config
+      - /mnt/seanas01_media:/mnt/seanas01_media
+      - /mnt/seanas02_media:/mnt/seanas02_media
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: dnloads-sonarr
+    volumes:
+      - /home/mander/docker/dnloads/sonarr/config:/config
+      - /mnt/seanas01_media:/mnt/seanas01_media
+      - /mnt/seanas02_media:/mnt/seanas02_media
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ="America/Los_Angeles"
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - '8989:8989'
+    restart: unless-stopped
+
+  radarr:
+    image: ghcr.io/linuxserver/radarr:latest
+    container_name: dnloads-radarr
+    volumes:
+      - /home/mander/docker/dnloads/radarr/config:/config
+      - /mnt/seanas01_media:/mnt/seanas01_media
+      - /mnt/seanas02_media:/mnt/seanas02_media
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+
+  ombi:
+    image: ghcr.io/linuxserver/ombi:latest
+    container_name: dnloads-ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/mander/docker/dnloads/ombi:/config
+    ports:
+      - 3579:3579
+    restart: unless-stopped
+
+
+  syncthing:
+    image: syncthing/syncthing
+    container_name: dnloads-syncthing
+    hostname: dc-syncthing
+    environment: 
+      - PUID=1000 
+      - PGID=1000 
+    volumes:
+      - /mnt/seanas02_media/Working:/mnt/seanas02-media-working
+      - /home/mander/docker/dnloads/syncthing/config:/var/syncthing
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: dnloads-prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/mander/docker/dnloads/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: dnloads-overseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - /home/mander/docker/dnloads/overseerr:/app/config
+    restart: unless-stopped
