@@ -4,9 +4,9 @@ services:
     image: lscr.io/linuxserver/emby:latest
     container_name: emby
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
+      - PUID=1028
+      - PGID=100
+      - TZ=America/Los_Angeles
     volumes:
       - fs01-docker-emby:/config
       - fs02-media:/data/fs02-media
