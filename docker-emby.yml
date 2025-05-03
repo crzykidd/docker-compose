@@ -8,7 +8,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /var/docker/emby:/config
+      - fs01-docker-emby:/config
       - fs02-media:/data/fs02-media
       - tnas01-media:/data/tnas01-media
     ports:
@@ -28,7 +28,7 @@ services:
 networks:
   proxy:
     external: true
-    
+
 volumes:
   fs02-media:
     driver_opts:
@@ -40,3 +40,8 @@ volumes:
       type: "nfs"
       o: "addr=192.168.55.24,nfsvers=4,hard"
       device: ":/mnt/Raid01/media"
+  fs01-docker-emby:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker/data/emby"            
