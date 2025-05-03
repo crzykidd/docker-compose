@@ -1,0 +1,44 @@
+services:
+  traefik:
+    image: traefik:latest
+    container_name: plex-traefik
+
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+       proxy:
+    ports:
+      - 80:80
+      - 81:81 # external http
+      - 443:443
+      - 444:444 # external https
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/docker/traefik-data/traefik.yml:/traefik.yml:ro
+      - /var/docker/traefik-data/acme.json:/acme.json
+      - /var/docker/traefik-data/config.yml:/config.yml:ro
+      - /var/docker/traefik-data/logs:/var/log/traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http" # restricts dashboard to internal entrypoint
+      - "traefik.http.routers.traefik.rule=Host(`dc-plex-traefik.crzynet.com`)" # if you want a internal domain, get the wildcard cert for it and then choos traefik-dashboard.home.yourdomain.co.uk or what you want      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:password-hash"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`dc-plex-traefik.crzynet.com`)" # if you want a internal domain, get the wildcard cert for it and then choos traefik-dashboard.home.yourdomain.co.uk or what you want
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-secure.tls.domains[1].main=crzynet.com" #if you use the .home.yourdomain.co.uk entry you have to change the [0] into [1]
+      - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.crzynet.com" # same here, change 0 to 1
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,42 @@
+---
+services:
+  emby:
+    image: lscr.io/linuxserver/emby:latest
+    container_name: emby
+    environment:
+      - PUID=1028
+      - PGID=100
+      - TZ=America/Los_Angeles
+    volumes:
+      - /var/docker/emby:/config
+      - seanas01-media:/data/seanas01-media
+      - seanas02-media:/data/seanas02-media
+    ports:
+      - 8096:8096      
+    
+    restart: unless-stopped
+    networks:
+      - proxy    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ar-emby.rule=Host(`ar-emby.crzynet.com`)"
+      - "traefik.http.routers.ar-emby.tls=true"
+      - "traefik.http.services.ar-emby.loadbalancer.server.port=8096"        
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  seanas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.20.90,nfsvers=4,hard"
+      device: ":/volume1/media"      
+  seanas02-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.20.105,nfsvers=4,hard"
+      device: ":/volume1/media"      
+ 
