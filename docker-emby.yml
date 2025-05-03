@@ -16,6 +16,14 @@ services:
       - 8920:8920 #optional
     
     restart: unless-stopped
+    networks:
+      - proxy    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ar-emby.rule=Host(`ar-emby.crzynet.com`)"
+      - "traefik.http.routers.ar-emby.tls=true"
+      - "traefik.http.services.ar-emby.loadbalancer.server.port=8096"        
 
 volumes:
   fs02-media:
