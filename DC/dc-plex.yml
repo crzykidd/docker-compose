@@ -1,0 +1,32 @@
+services:
+  plex:
+    image: plexinc/pms-docker:plexpass
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/mander/docker/plex/config:/config
+      - /home/mander/plextranscode:/transcode
+      - /mnt/seanas01_media:/mnt/seanas01_media
+      - /mnt/seanas02_media:/mnt/seanas02_media
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: host
+    restart: unless-stopped
+
+
+  tautulli:
+    image: tautulli/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - America/Los_Angeles
+    volumes:
+      - /home/mander/docker/plex/tautulli-config:/config
+      - /home/mander/docker/plex/config/Library/Application Support/Plex Media Server/Logs:/logs:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8181:8181
+    restart: unless-stopped
