@@ -1,0 +1,49 @@
+---
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1028
+      - PGID=100
+      - TZ=America/Los_Angeles
+      #- JELLYFIN_PublishedServerUrl= #optional
+    volumes:
+      - fs01-docker-jellyfin:/config
+      - fs02-media:/data/fs02-media
+      - tnas01-media:/data/tnas01-media
+    ports:
+      - 8096:8096
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    restart: unless-stopped
+    netowrks:
+      - proxy         
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ar-jf.rule=Host(`ar-jf.crzynet.com`)"
+      - "traefik.http.routers.ar-jf.tls=true"
+      - "traefik.http.services.ar-jf.loadbalancer.server.port=8096"        
+
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  fs02-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.22,nfsvers=4,hard"
+      device: ":/volume1/media"      
+  tnas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.24,nfsvers=4,hard"
+      device: ":/mnt/Raid01/media"
+  fs01-docker-jellyfin:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.55.21,nfsvers=4,hard"
+      device: ":/volume1/docker/data/jellyfin"      

@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.traefik-secure.tls.domains[1].main=crzynet.com" #if you use the .home.yourdomain.co.uk entry you have to change the [0] into [1]
       - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.crzynet.com" # same here, change 0 to 1
       - "traefik.http.routers.traefik-secure.service=api@internal"
-
+   
 networks:
   proxy:
     external: true
