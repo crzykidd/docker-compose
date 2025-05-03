@@ -25,6 +25,10 @@ services:
       - "traefik.http.routers.ar-emby.tls=true"
       - "traefik.http.services.ar-emby.loadbalancer.server.port=8096"        
 
+networks:
+  proxy:
+    external: true
+    
 volumes:
   fs02-media:
     driver_opts:
