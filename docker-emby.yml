@@ -17,6 +17,7 @@ services:
     
     restart: unless-stopped
 
+volumes:
   fs02-media:
     driver_opts:
       type: "nfs"
