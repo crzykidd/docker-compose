@@ -20,9 +20,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.ar-emby.rule=Host(`ar-emby.crzynet.com`)"
-      - "traefik.http.routers.ar-emby.tls=true"
-      - "traefik.http.services.ar-emby.loadbalancer.server.port=8096"        
+      - "traefik.http.routers.dc-emby.rule=Host(`dc-emby.crzynet.com`)"
+      - "traefik.http.routers.dc-emby.tls=true"
+      - "traefik.http.services.dc-emby.loadbalancer.server.port=8096"        
 
 networks:
   proxy:
