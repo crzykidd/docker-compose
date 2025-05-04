@@ -170,7 +170,7 @@ services:
   watchstate:
     image: ghcr.io/arabcoders/watchstate:latest
         # To change the user/group id associated with the tool change the following line.
-    user: "${UID:1000}:${GID:1000}"
+    user: "1000:1000"
     container_name: dnloads-watchstate
     restart: unless-stopped
     ports:
