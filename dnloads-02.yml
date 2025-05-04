@@ -166,17 +166,17 @@ services:
       - "traefik.http.routers.bazarr.tls=true"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"        
 
-services:
-    watchstate:
-        image: ghcr.io/arabcoders/watchstate:latest
+
+  watchstate:
+    image: ghcr.io/arabcoders/watchstate:latest
         # To change the user/group id associated with the tool change the following line.
-        user: "${UID:-1000}:${GID:-1000}"
-        container_name: dnloads-watchstate
-        restart: unless-stopped
-        ports:
-            - "8080:8080" # The port which will serve WebUI + API + Webhooks
-        volumes:
-            - /var/docker/dnloads/watchstate:/config:rw # mount current directory to container /config directory.
+    user: "${UID:-1000}:${GID:-1000}"
+    container_name: dnloads-watchstate
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # The port which will serve WebUI + API + Webhooks
+    volumes:
+      - /var/docker/dnloads/watchstate:/config:rw # mount current directory to container /config directory.
     networks:
       - proxy    
     labels:
