@@ -78,6 +78,15 @@ services:
     networks:
       - proxy    
 
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: always
+    environment:
+      - API_KEY=${CFDDNS_API_KEY}
+      - ZONE=crzynet.com
+      - SUBDOMAIN=main.crzynet.com
+      - PROXIED=false
+      
 volumes:
   homepage:
     driver_opts:
