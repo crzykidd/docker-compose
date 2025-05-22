@@ -1,0 +1,92 @@
+################################
+# 🦎 KOMODO COMPOSE - MONGO 🦎 #
+################################
+
+## This compose file will deploy:
+##   1. MongoDB
+##   2. Komodo Core
+##   3. Komodo Periphery
+
+services:
+  mongo:
+    image: mongo
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    command: --quiet --wiredTigerCacheSizeGB 0.25
+    restart: unless-stopped
+    logging:
+      driver: local
+    # ports:
+    #   - 27017:27017
+    volumes:
+      - /var/docker/komodo/mongo-data:/data/db
+      - /var/docker/komodo/mongo-config:/data/configdb
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks: 
+      - proxy
+  
+  core:
+    image: ghcr.io/moghtech/komodo-core:latest
+    labels:
+      - komodo.skip # Prevent Komodo from stopping with StopAllContainers
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.komodo.rule=Host(`komodo.crzynet.com`)"
+      - "traefik.http.routers.komodo.tls=true"
+      - "traefik.http.services.komodo.loadbalancer.server.port=9120"
+    restart: unless-stopped
+    networks: 
+      - proxy
+
+    depends_on:
+      - mongo
+    logging:
+      driver: local
+    ports:
+      - 9120:9120
+#    environment:
+#      KOMODO_DATABASE_ADDRESS: mongo:27017
+#      KOMODO_DATABASE_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+#      KOMODO_DATABASE_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      ## Core cache for repos for latest commit hash / contents
+      - /var/docker/komodo/repo-cache:/repo-cache
+      - /var/docker/komodo/config.toml:/config/config.toml
+      ## Store sync files on server
+      # - /path/to/syncs:/syncs
+      ## Optionally mount a custom core.config.toml
+      # - /path/to/core.config.toml:/config/config.toml
+    ## Allows for systemd Periphery connection at 
+    ## "http://host.docker.internal:8120"
+    # extra_hosts:
+    #   - host.docker.internal:host-gateway
+
+  ## Deploy Periphery container using this block,
+  ## or deploy the Periphery binary with systemd using 
+  ## https://github.com/moghtech/komodo/tree/main/scripts
+  periphery:
+    image: ghcr.io/moghtech/komodo-periphery:latest
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    logging:
+      driver: local
+#    ports:
+#      - 8120:8120
+    environment:
+      PERIPHERY_REPO_DIR: /var/docker/komodo/data/repos
+      PERIPHERY_STACK_DIR: /var/docker/komodo/data/stacks
+      PERIPHERY_SSL_KEY_FILE: /var/docker/komodo/data/ssl/key.pem
+      PERIPHERY_SSL_CERT_FILE: /var/docker/komodo/data/ssl/cert.pem
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/proc
+      - /var/docker/komodo/config.toml:/config/config.toml
+    networks: 
+      - proxy
+
+networks:
+  proxy:
+    external: true
