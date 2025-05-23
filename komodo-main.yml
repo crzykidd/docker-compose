@@ -30,7 +30,7 @@ services:
   core:
     image: ghcr.io/moghtech/komodo-core:latest
     labels:
-      - komodo.skip # Prevent Komodo from stopping with StopAllContainers
+      - komodo.skip= # Prevent Komodo from stopping with StopAllContainers
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.komodo.rule=Host(`komodo.crzynet.com`)"
