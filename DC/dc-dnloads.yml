@@ -14,7 +14,7 @@ services:
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
-    container_name: dnloads-bazarr
+    container_name: dc-bazarr
     environment:
       - PUID=1000
       - PGID=1000
@@ -25,11 +25,22 @@ services:
       - /mnt/seanas02_media:/mnt/seanas02_media
     ports:
       - 6767:6767
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-bazarr.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-bazarr:6767"
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:6767
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-bazarr.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads
+      
     restart: unless-stopped
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
-    container_name: dnloads-sonarr
+    container_name: dc-sonarr
     volumes:
       - /home/mander/docker/dnloads/sonarr/config:/config
       - /mnt/seanas01_media:/mnt/seanas01_media
@@ -41,6 +52,17 @@ services:
       - PGID=1000
     ports:
       - '8989:8989'
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-sonarr.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-sonarr:8989"
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:8989
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-sonarr.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads
+
     restart: unless-stopped
 
   radarr:
