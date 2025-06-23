@@ -7,6 +7,9 @@ services:
     volumes:
       - /var/docker/std:/config
     labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc.crzynet.com"
+      - "cloudflare.tunnel.service=http://service-tracker-dash:8815"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8815
       - dockernotifier.std.internal.health=true
