@@ -37,6 +37,8 @@ services:
       - dockernotifier.std.group=dnloads
       
     restart: unless-stopped
+    networks:
+      - proxy  
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -64,6 +66,8 @@ services:
       - dockernotifier.std.group=dnloads
 
     restart: unless-stopped
+    networks:
+      - proxy      
 
   radarr:
     image: ghcr.io/linuxserver/radarr:latest
@@ -79,6 +83,8 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
+    networks:
+      - proxy      
 
 
   ombi:
@@ -93,6 +99,8 @@ services:
     ports:
       - 3579:3579
     restart: unless-stopped
+    networks:
+      - proxy      
 
 
   syncthing:
@@ -110,6 +118,8 @@ services:
       - 22000:22000/tcp
       - 22000:22000/udp
     restart: unless-stopped
+    networks:
+      - proxy      
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
@@ -123,6 +133,8 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
+    networks:
+      - proxy      
 
   overseerr:
     image: sctx/overseerr:latest
@@ -136,3 +148,9 @@ services:
     volumes:
       - /home/mander/docker/dnloads/overseerr:/app/config
     restart: unless-stopped
+    networks:
+      - proxy     
+
+networks:
+  proxy:
+    external: true       
