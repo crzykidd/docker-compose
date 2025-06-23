@@ -32,7 +32,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DOZZLE_REMOTE_AGENT=docker50.home.arpa:7007,fs01.home.arpa:7007,raspi10.home.arpa:7007,docker02.home.arpa:7007,docker03.home.arpa:7007,raspi10.home.arpa:7007
+      #- DOZZLE_REMOTE_AGENT=docker50.home.arpa:7007,fs01.home.arpa:7007,raspi10.home.arpa:7007,docker02.home.arpa:7007,docker03.home.arpa:7007,raspi10.home.arpa:7007
     ports:
       - 8080:8080
     labels:
