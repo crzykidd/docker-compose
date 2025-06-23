@@ -1,0 +1,21 @@
+services:
+  tracker:
+    image: crzykidd/service-tracker-dashboard:latest
+    container_name: service-tracker-dash
+    ports:
+      - "8815:8815"
+    volumes:
+      - /var/docker/std:/config
+    labels:
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:8815
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc.crzynet.com
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=Utilities
+
+    networks:
+       proxy:
+networks:
+  proxy:
+    external: true
