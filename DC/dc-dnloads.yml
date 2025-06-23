@@ -1,18 +1,4 @@
 services:
-#  heimdall:
-#    image: lscr.io/linuxserver/heimdall
-#    container_name: dnloads-heimdall
-#    environment:
-#      - PUID=1000
-#      - PGID=1000
-#      - TZ=America/Los_Angeles
-#    volumes:
-#      - /home/mander/docker/dnloads/heimdall/config:/config
-#    ports:
-#      - 8080:80
-#      - 8443:443
-#    restart: unless-stopped
-
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
@@ -25,31 +11,6 @@ services:
       - HOMEPAGE_VAR_SONARR_API=${HOMEPAGE_VAR_SONARR_API}
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS} 
 
-#  dashy:
-#    image: lissy93/dashy
-#    container_name: Dashy
-    # Pass in your config file below, by specifying the path on your host machine
-#    volumes:
-#       - /home/mander/docker/dnloads/dashy/my-config.yml:/app/public/conf.yml
-#       - /home/mander/docker/dnloads/dashy/icons:/app/public/item-icons/icons
-#    ports:
-#      - 4000:80
-    # Set any environmental variables
-#    environment:
-#      - NODE_ENV=production
-    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
-#      - UID=1000
-#      - GID=1000
-    # Specify restart policy
-#    restart: unless-stopped
-    # Configure healthchecks
-#    healthcheck:
-#      test: ['CMD', 'node', '/app/services/healthcheck']
-#      interval: 1m30s
-#      timeout: 10s
-#      retries: 3
-#      start_period: 40s
-
   cloudflared:
     image: cloudflare/cloudflared
     container_name: cloudflare-tunnel
@@ -57,22 +18,6 @@ services:
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-
-
-#  jackett:
-#    container_name: dnloads-jackett
-#    image: ghcr.io/linuxserver/jackett:latest
-#    restart: unless-stopped
-#    ports:
-#      - '9117:9117'
-#    environment:
-#      - TZ=America/Los_Angeles
-#      - PUID=1000
-#      - PGID=1000
-#    volumes:
-#      - /home/mander/docker/dnloads/jackett/config:/config
-#      - /etc/localtime:/etc/localtime:ro
-
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -88,7 +33,6 @@ services:
     ports:
       - 6767:6767
     restart: unless-stopped
-
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
