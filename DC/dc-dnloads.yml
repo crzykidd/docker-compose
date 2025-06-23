@@ -29,6 +29,8 @@ services:
       - "cloudflare.tunnel.enable=true"
       - "cloudflare.tunnel.hostname=dc-bazarr.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-bazarr:6767"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dnloadstest"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:6767
       - dockernotifier.std.internal.health=true
@@ -58,6 +60,8 @@ services:
       - "cloudflare.tunnel.enable=true"
       - "cloudflare.tunnel.hostname=dc-sonarr.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-sonarr:8989"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dnloadstest"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8989
       - dockernotifier.std.internal.health=true
@@ -71,7 +75,7 @@ services:
 
   radarr:
     image: ghcr.io/linuxserver/radarr:latest
-    container_name: dnloads-radarr
+    container_name: dc-radarr
     volumes:
       - /home/mander/docker/dnloads/radarr/config:/config
       - /mnt/seanas01_media:/mnt/seanas01_media
@@ -82,6 +86,18 @@ services:
       - PGID=1000
     ports:
       - 7878:7878
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-radarr.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-radarr:7878"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dnloadstest"      
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:7878
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-radarr.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads      
     restart: unless-stopped
     networks:
       - proxy      
@@ -89,7 +105,7 @@ services:
 
   ombi:
     image: ghcr.io/linuxserver/ombi:latest
-    container_name: dnloads-ombi
+    container_name: dc-ombi
     environment:
       - PUID=1000
       - PGID=1000
@@ -98,6 +114,18 @@ services:
       - /home/mander/docker/dnloads/ombi:/config
     ports:
       - 3579:3579
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-ombi.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-ombi:3579"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dnloadstest"
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:3579
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-ombi.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads      
     restart: unless-stopped
     networks:
       - proxy      
@@ -123,7 +151,7 @@ services:
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
-    container_name: dnloads-prowlarr
+    container_name: dc-prowlarr
     environment:
       - PUID=1000
       - PGID=1000
@@ -133,6 +161,18 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-prowlarr.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-prowlarr:9696"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dnloadstest"
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:9696
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-prowlarr.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads      
     networks:
       - proxy      
 
