@@ -1,0 +1,22 @@
+services:  
+  docker-api-notifier:
+    image: crzykidd/docker-api-notifier:latest
+    container_name: docker-api-notifier
+    environment:
+      - STD_URL=${STD_URL}
+      - STD_API_TOKEN=${STD_API_TOKEN}
+      - TZ=America/Los_Angeles  
+      - STD_REFRESH_SECONDS=120    
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/hostname:/etc/host_hostname:ro
+      - /var/docker/api-notifier:/config
+    labels:
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.group=agent
+    restart: unless-stopped
+    networks:
+       proxy:
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,54 @@
+services:
+  dockflare:
+    image: alplat/dockflare:stable
+    container_name: dockflare
+    restart: unless-stopped
+    ports:
+      - "5000:5000"  # Web UI port
+    labels:
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:5000/
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-df01.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=docker-Utilities
+    environment:
+      - CF_API_TOKEN=${CF_API_TOKEN}
+      - CF_ACCOUNT_ID=${CF_ACCOUNT_ID}
+      - CF_ZONE_ID=${CF_ZONE_ID}
+      - TUNNEL_NAME=${TUNNEL_NAME}
+      - CLOUDFLARED_NETWORK_NAME=${CLOUDFLARED_NETWORK_NAME}
+      - GRACE_PERIOD_SECONDS=28800  # 8 hours before removing rules after container stops
+      - LABEL_PREFIX=cloudflare.tunnel  # Prefix for Docker labels
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Required to monitor Docker events
+      - /var/docker/dockflare:/app/data  # Persistent storage for state
+    networks:
+      - proxy  
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOZZLE_REMOTE_AGENT=docker50.home.arpa:7007,fs01.home.arpa:7007,raspi10.home.arpa:7007,docker02.home.arpa:7007,docker03.home.arpa:7007,raspi10.home.arpa:7007
+    ports:
+      - 8080:8080
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-dozzle.crzynet.com"
+      - "cloudflare.tunnel.service=http://dozzle:8080"
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:8080
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-dozzle.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=Utilities
+      - dockernotifier.std.sort.priority=4
+    networks:
+      - proxy     
+
+networks:
+  proxy:
+    external: true
