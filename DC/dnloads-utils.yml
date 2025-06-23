@@ -10,7 +10,7 @@ services:
       - "cloudflare.tunnel.hostname=dc-df01.crzynet.com"
       - "cloudflare.tunnel.service=http://dockflare:5000"
       - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dnloadstest"      
+      - "cloudflare.tunnel.access.name=dc-df01"      
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:5000/
       - dockernotifier.std.internal.health=true
@@ -44,6 +44,8 @@ services:
       - "cloudflare.tunnel.enable=true"
       - "cloudflare.tunnel.hostname=dc-dozzle.crzynet.com"
       - "cloudflare.tunnel.service=http://dozzle:8080"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dc-dozzle"          
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8080
       - dockernotifier.std.internal.health=true
