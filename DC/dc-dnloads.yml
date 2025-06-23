@@ -11,13 +11,6 @@ services:
       - HOMEPAGE_VAR_SONARR_API=${HOMEPAGE_VAR_SONARR_API}
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS} 
 
-  cloudflared:
-    image: cloudflare/cloudflared
-    container_name: cloudflare-tunnel
-    restart: unless-stopped
-    command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
