@@ -30,7 +30,7 @@ services:
       - "cloudflare.tunnel.hostname=dc-bazarr.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-bazarr:6767"
       - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dnloadstest"
+      - "cloudflare.tunnel.access.name=dc-bazarr"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:6767
       - dockernotifier.std.internal.health=true
@@ -61,7 +61,7 @@ services:
       - "cloudflare.tunnel.hostname=dc-sonarr.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-sonarr:8989"
       - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dnloadstest"
+      - "cloudflare.tunnel.access.name=dc-sonarr"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8989
       - dockernotifier.std.internal.health=true
@@ -91,7 +91,7 @@ services:
       - "cloudflare.tunnel.hostname=dc-radarr.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-radarr:7878"
       - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dnloadstest"      
+      - "cloudflare.tunnel.access.name=dc-radarr"      
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:7878
       - dockernotifier.std.internal.health=true
@@ -118,8 +118,7 @@ services:
       - "cloudflare.tunnel.enable=true"
       - "cloudflare.tunnel.hostname=dc-ombi.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-ombi:3579"
-      - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dnloadstest"
+      - "cloudflare.tunnel.access.policy=bypass"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:3579
       - dockernotifier.std.internal.health=true
@@ -133,7 +132,7 @@ services:
 
   syncthing:
     image: syncthing/syncthing
-    container_name: dnloads-syncthing
+    container_name: dc-syncthing
     hostname: dc-syncthing
     environment: 
       - PUID=1000 
@@ -145,6 +144,18 @@ services:
       - 8384:8384
       - 22000:22000/tcp
       - 22000:22000/udp
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-syncthing.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-syncthing:7878"
+      - "cloudflare.tunnel.access.policy=authenticate"
+      - "cloudflare.tunnel.access.name=dc-syncthing"      
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:8384
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-syncthing.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads            
     restart: unless-stopped
     networks:
       - proxy      
@@ -166,7 +177,7 @@ services:
       - "cloudflare.tunnel.hostname=dc-prowlarr.crzynet.com"
       - "cloudflare.tunnel.service=http://dc-prowlarr:9696"
       - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dnloadstest"
+      - "cloudflare.tunnel.access.name=dc-prowlarr"
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:9696
       - dockernotifier.std.internal.health=true
@@ -178,13 +189,24 @@ services:
 
   overseerr:
     image: sctx/overseerr:latest
-    container_name: dnloads-overseerr
+    container_name: dc-overseerr
     environment:
       - LOG_LEVEL=debug
       - TZ=America/Los_Angeles
       - PORT=5055 #optional
     ports:
       - 5055:5055
+    labels:
+      - "cloudflare.tunnel.enable=true"
+      - "cloudflare.tunnel.hostname=dc-os.crzynet.com"
+      - "cloudflare.tunnel.service=http://dc-overseerr:5055"
+      - "cloudflare.tunnel.access.policy=bypass"
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:5055
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://dc-os.crzynet.com/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads       
     volumes:
       - /home/mander/docker/dnloads/overseerr:/app/config
     restart: unless-stopped
