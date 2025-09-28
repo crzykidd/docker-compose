@@ -43,7 +43,7 @@ volumes:
       type: "nfs"
       o: "addr=192.168.20.90,nfsvers=4,hard"
       device: ":/volume1/Media"      
-  seanas01-media:
+  seanas01-jellyfin-cache:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.20.90,nfsvers=4,hard"
