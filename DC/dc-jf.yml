@@ -1,6 +1,6 @@
 ---
 services:
-  emby:
+
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
