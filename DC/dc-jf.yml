@@ -1,0 +1,56 @@
+---
+services:
+  emby:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1028
+      - PGID=100
+      - TZ=America/Los_Angeles
+    volumes:
+      - /var/docker/jellyfin/config:/config
+      - seanas01-jellyfin-cache:/cache      
+      - seanas01-media:/data/seanas01-media
+      - seanas02-media:/data/seanas02-media
+    ports:
+      - 8097:8096      
+    
+    restart: unless-stopped
+    networks:
+      - proxy    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.dc-jf.rule=Host(`dc-emby.crzynet.com`)"
+      - "traefik.http.routers.dc-jf.tls=true"
+      - "traefik.http.services.dc-jf.loadbalancer.server.port=8096" 
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:8097
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.externalurl=https://ar-jf.crzynet.com:32224/
+      - dockernotifier.std.external.health=true
+      - dockernotifier.std.group=Media
+      - dockernotifier.std.sort.priority=4       
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  seanas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.20.90,nfsvers=4,hard"
+      device: ":/volume1/Media"      
+  seanas01-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.20.90,nfsvers=4,hard"
+      device: ":/volume1/Media/Jellyfin/cache"          
+  seanas02-media:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.20.105,nfsvers=4,hard"
+      device: ":/volume1/Media"      
+ 

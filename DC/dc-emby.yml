@@ -11,8 +11,8 @@ services:
       - /var/docker/emby:/config
       - seanas01-media:/data/seanas01-media
       - seanas02-media:/data/seanas02-media
-    ports:
-      - 8096:8096      
+#    ports:
+#      - 8096:8096      
     
     restart: unless-stopped
     networks:
