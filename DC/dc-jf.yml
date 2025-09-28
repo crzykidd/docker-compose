@@ -22,13 +22,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.dc-jf.rule=Host(`dc-emby.crzynet.com`)"
+      - "traefik.http.routers.dc-jf.rule=Host(`dc-jf.crzynet.com`)"
       - "traefik.http.routers.dc-jf.tls=true"
       - "traefik.http.services.dc-jf.loadbalancer.server.port=8096" 
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8097
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://ar-jf.crzynet.com:32224/
+      - dockernotifier.std.externalurl=https://ar-jf.crzynet.com:32222/
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=Media
       - dockernotifier.std.sort.priority=4       
