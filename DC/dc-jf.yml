@@ -2,7 +2,7 @@
 services:
 
   jellyfin:
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin:10.11.0-rc8
     container_name: jellyfin
     environment:
       - PUID=1028
@@ -28,7 +28,7 @@ services:
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8097
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://ar-jf.crzynet.com:32222/
+      - dockernotifier.std.externalurl=https://dc-jf.crzynet.com:32222/
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=Media
       - dockernotifier.std.sort.priority=4       
