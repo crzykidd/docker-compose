@@ -1,0 +1,123 @@
+services:
+  # Database migration service - runs once to set up tables
+  migrate:
+    image: docker.io/fredrikburmester/streamystats-v2-migrate:${VERSION:-latest}
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@vectorchord:5432/${POSTGRES_DB:-streamystats}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-streamystats}
+      - PGPASSWORD=${POSTGRES_PASSWORD:-postgres}
+    depends_on:
+      vectorchord:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - app-network
+
+  nextjs-app:
+    image: docker.io/fredrikburmester/streamystats-v2-nextjs:${VERSION:-latest}
+    #ports:
+    #  - "3001:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.dc-streamystats.entrypoints=https"
+      - "traefik.http.routers.dc-streamystats.rule=Host(`dc-streamystats.crzynet.com`)"
+      - "traefik.http.routers.dc-streamystats.tls=true"
+      - "traefik.http.services.dc-streamystats.loadbalancer.server.port=3000"   
+
+      - dockernotifier.notifiers=dns,service-tracker-dashboard
+      - dockernotifier.dns.containerhostname=dc-streamystats
+      - dockernotifier.dns.containerzone=crzynet.com
+      - dockernotifier.dns.dockerdomain=home.arpa       
+      - dockernotifier.std.internalurl=https://dc-streamystats.crzynet.com/
+      - dockernotifier.std.internal.health=true  
+      - dockernotifier.std.group=media 
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@vectorchord:5432/${POSTGRES_DB:-streamystats}
+      - JOB_SERVER_URL=http://job-server:3005
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      vectorchord:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/api/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - app-network
+      - proxy
+
+
+  job-server:
+    image: docker.io/fredrikburmester/streamystats-v2-job-server:${VERSION:-latest}
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@vectorchord:5432/${POSTGRES_DB:-streamystats}
+      - PORT=3005
+      - HOST=0.0.0.0
+    depends_on:
+      vectorchord:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3005/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - app-network
+
+  vectorchord:
+    image: tensorchord/vchord-postgres:pg17-v0.4.1
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-streamystats}
+    volumes:
+      - /var/docker/vectorchord_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-streamystats}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+  proxy:
+    external: true
