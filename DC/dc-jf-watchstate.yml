@@ -1,0 +1,32 @@
+services:
+  watchstate:
+    image: ghcr.io/arabcoders/watchstate:latest
+    # To change the user/group id associated with the tool change the following line.
+    user: "${UID:-1028}:${GID:-100}"
+    container_name: watchstate
+    restart: unless-stopped
+    environment:
+      - TZ=America/Las_Angeles 
+    ports:
+      - "8080:8080" # The port which the webui will be available on.
+    volumes:
+      - /var/docker/watchstate/data:/config:rw # mount current directory to container /config directory.
+    networks:
+      - proxy    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.dc-jf-watchstate.rule=Host(`dc-jf-watchstate.crzynet.com`)"
+      - "traefik.http.routers.dc-jf-watchstate.tls=true"
+      - "traefik.http.services.dc-jf-watchstate.loadbalancer.server.port=8080"        
+      - dockernotifier.notifiers=dns,service-tracker-dashboard
+      - dockernotifier.dns.containerhostname=dc-jf-watchstate
+      - dockernotifier.dns.containerzone=crzynet.com
+      - dockernotifier.dns.dockerdomain=home.arpa       
+      - dockernotifier.std.internalurl=https://dc-jf-watchstate.crzynet.com/
+      - dockernotifier.std.internal.health=true  
+      - dockernotifier.std.group=media 
+
+networks:
+  proxy:
+    external: true
