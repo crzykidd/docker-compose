@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.dc-jf-watchstate.rule=Host(`dc-jf-watchstate.crzynet.com`)"
       - "traefik.http.routers.dc-jf-watchstate.tls=true"
       - "traefik.http.services.dc-jf-watchstate.loadbalancer.server.port=8080"        
-      - dockernotifier.notifiers=dns,service-tracker-dashboard
+      - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.dns.containerhostname=dc-jf-watchstate
       - dockernotifier.dns.containerzone=crzynet.com
       - dockernotifier.dns.dockerdomain=home.arpa       
