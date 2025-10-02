@@ -18,7 +18,7 @@ services:
   nextjs-app:
     image: docker.io/fredrikburmester/streamystats-v2-nextjs:${VERSION:-latest}
     ports:
-      - "3001:3000"
+      - "3003:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
