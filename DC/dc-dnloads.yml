@@ -224,6 +224,33 @@ services:
     networks:
       - cloudflare-net
 
+  huntarr:
+    image: ghcr.io/plexguide/huntarr:latest
+    container_name: huntarr
+    restart: always
+    ports:
+    #  - "9705:9705"
+    volumes:
+      - /var/docker/huntarr:/config
+    environment:
+      - TZ=America/Los_Angeles
+    labels:
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-huntarr.crzynet.com"
+      - "dockflare.service=http://huntarr:5055"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"
+
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=https://dc-huntarr.crzynet.com/
+      - dockernotifier.std.internal.health=true
+      #- dockernotifier.std.externalurl=http://192.168.20.91:5055
+      #- dockernotifier.std.external.health=true
+      - dockernotifier.std.group=dnloads        
+    networks:
+      - cloudflare-net   
+
+
 networks:
   proxy:
     external: true
