@@ -20,24 +20,17 @@ services:
     ports:
       - "3003:3000"
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
-      - "traefik.http.routers.dc-streamystats.entrypoints=https"
-      - "traefik.http.routers.dc-streamystats.rule=Host(`dc-streamystats.crzynet.com`)"
-      - "traefik.http.routers.dc-streamystats.tls=true"
-      - "traefik.http.services.dc-streamystats.loadbalancer.server.port=3000"   
-      - "cloudflare.tunnel.enable=true"
-      - "cloudflare.tunnel.hostname=dc-streamystats.crzynet.com"
-      - "cloudflare.tunnel.service=http://nextjs-app:3000"
-      - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dc-streamstats"   
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-streamystats.crzynet.com"
+      - "dockflare.service=http://nextjs-app:3000"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"   
 
-      - dockernotifier.notifiers=dns,service-tracker-dashboard
-      - dockernotifier.dns.containerhostname=dc-streamystats
-      - dockernotifier.dns.containerzone=crzynet.com
-      - dockernotifier.dns.dockerdomain=home.arpa       
-      - dockernotifier.std.internalurl=https://dc-streamystats.crzynet.com/
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=http://192.168.20.91:3003
       - dockernotifier.std.internal.health=true  
+      - dockernotifier.std.externalurl=https://dc-streamystats.crzynet.com/
+      - dockernotifier.std.external.health=true  
       - dockernotifier.std.group=media 
     environment:
       - NODE_ENV=production
