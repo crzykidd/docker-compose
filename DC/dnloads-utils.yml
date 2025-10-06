@@ -23,7 +23,7 @@ services:
       - dockernotifier.std.group=Utilities
       - dockernotifier.std.sort.priority=4
     networks:
-      - proxy     
+      - cloudflare-net  
 
 # START DOCKFLARE BLOCK
   docker-socket-proxy:
