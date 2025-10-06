@@ -9,15 +9,16 @@ services:
     ports:
       - 8080:8080
     labels:
-      - "cloudflare.tunnel.enable=true"
-      - "cloudflare.tunnel.hostname=dc-dozzle.crzynet.com"
-      - "cloudflare.tunnel.service=http://dozzle:8080"
-      - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dc-dozzle"          
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-dozzle.crzynet.com"
+      - "dockflare.service=http://dozzle:8080"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"          
+      
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:8080
+      - dockernotifier.std.internalurl=https://dc-dozzle.crzynet.com/
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-dozzle.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:8080
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=Utilities
       - dockernotifier.std.sort.priority=4
