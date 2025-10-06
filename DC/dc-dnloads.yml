@@ -237,7 +237,7 @@ services:
     labels:
       - "dockflare.enable=true"
       - "dockflare.hostname=dc-huntarr.crzynet.com"
-      - "dockflare.service=http://huntarr:5055"
+      - "dockflare.service=http://huntarr:9705"
       - "dockflare.access.policy=authenticate"
       - "dockflare.access.group=dnload-admins"
 
