@@ -12,21 +12,22 @@ services:
     volumes:
       - /var/docker/watchstate/data:/config:rw # mount current directory to container /config directory.
     networks:
-      - proxy    
+      - cloudflare-net
+
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
-      - "traefik.http.routers.dc-jf-watchstate.rule=Host(`dc-jf-watchstate.crzynet.com`)"
-      - "traefik.http.routers.dc-jf-watchstate.tls=true"
-      - "traefik.http.services.dc-jf-watchstate.loadbalancer.server.port=8080"        
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-jf-watchstate.crzynet.com"
+      - "dockflare.service=http://watchstate:8080"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"   
+
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.dns.containerhostname=dc-jf-watchstate
-      - dockernotifier.dns.containerzone=crzynet.com
-      - dockernotifier.dns.dockerdomain=home.arpa       
       - dockernotifier.std.internalurl=https://dc-jf-watchstate.crzynet.com/
       - dockernotifier.std.internal.health=true  
+      - dockernotifier.std.externalurl=http://192.168.20.91:8080/
+      - dockernotifier.std.external.health=true  
       - dockernotifier.std.group=media 
 
 networks:
-  proxy:
+  cloudflare-net:
     external: true
