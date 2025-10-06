@@ -26,15 +26,16 @@ services:
     ports:
       - 6767:6767
     labels:
-      - "cloudflare.tunnel.enable=true"
-      - "cloudflare.tunnel.hostname=dc-bazarr.crzynet.com"
-      - "cloudflare.tunnel.service=http://dc-bazarr:6767"
-      - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dc-bazarr"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-bazarr.crzynet.com"
+      - "dockflare.service=http://dc-bazarr:6767"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"
+
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:6767
+      - dockernotifier.std.internalurl=https://dc-bazarr.crzynet.com/
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-bazarr.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:6767
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=dnloads
       
