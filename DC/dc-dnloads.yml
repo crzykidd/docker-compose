@@ -42,6 +42,7 @@ services:
     restart: unless-stopped
     networks:
       - proxy  
+      - cloudflare-net
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -216,4 +217,6 @@ services:
 
 networks:
   proxy:
-    external: true       
+    external: true
+  cloudflare-net:
+    external: true    
