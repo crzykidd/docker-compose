@@ -31,7 +31,7 @@ services:
       - dockernotifier.std.internal.health=true  
       - dockernotifier.std.externalurl=https://dc-streamystats.crzynet.com/
       - dockernotifier.std.external.health=true  
-      - dockernotifier.std.group=media 
+      - dockernotifier.std.group=Media 
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@vectorchord:5432/${POSTGRES_DB:-streamystats}
