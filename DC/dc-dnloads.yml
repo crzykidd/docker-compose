@@ -155,7 +155,7 @@ services:
       - "dockflare.hostname=dc-syncthing.crzynet.com"
       - "dockflare.service=http://dc-syncthing:7878"
       - "dockflare.access.policy=authenticate"
-      - "dockflare.access.group=dnload-admin"      
+      - "dockflare.access.group=dnload-admins"      
 
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=https://dc-syncthing.crzynet.com/
