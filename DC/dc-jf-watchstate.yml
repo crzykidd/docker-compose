@@ -24,7 +24,7 @@ services:
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=https://dc-jf-watchstate.crzynet.com/
       - dockernotifier.std.internal.health=true  
-      - dockernotifier.std.externalurl=http://192.168.20.91:8080/
+      - dockernotifier.std.externalurl=http://192.168.20.91:8088/
       - dockernotifier.std.external.health=true  
       - dockernotifier.std.group=media 
 
