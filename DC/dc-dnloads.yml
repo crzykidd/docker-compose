@@ -1,15 +1,15 @@
 services:
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    ports:
-      - 3002:3000
-    volumes:
-      - /home/mander/docker/dnloads/homepage:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
-    environment:
-      - HOMEPAGE_VAR_SONARR_API=${HOMEPAGE_VAR_SONARR_API}
-      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS} 
+  #homepage:
+  #  image: ghcr.io/gethomepage/homepage:latest
+  #  container_name: homepage
+  #  ports:
+  #    - 3002:3000
+  #  volumes:
+  #    - /home/mander/docker/dnloads/homepage:/app/config # Make sure your local config directory exists
+  #    - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
+  #  environment:
+  #    - HOMEPAGE_VAR_SONARR_API=${HOMEPAGE_VAR_SONARR_API}
+  #    - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS} 
 
 
   bazarr:
@@ -64,6 +64,7 @@ services:
       - "dockflare.service=http://dc-sonarr:8989"
       - "dockflare.access.policy=authenticate"
       - "dockflare.access.group=dnload-admins"
+      
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=https://dc-sonarr.crzynet.com/
       - dockernotifier.std.internal.health=true
