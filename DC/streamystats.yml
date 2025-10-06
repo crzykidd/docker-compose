@@ -27,9 +27,9 @@ services:
       - "dockflare.access.group=dnload-admins"   
 
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:3003
+      - dockernotifier.std.internalurl=https://dc-streamystats.crzynet.com/
       - dockernotifier.std.internal.health=true  
-      - dockernotifier.std.externalurl=https://dc-streamystats.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:3003
       - dockernotifier.std.external.health=true  
       - dockernotifier.std.group=Media 
     environment:
