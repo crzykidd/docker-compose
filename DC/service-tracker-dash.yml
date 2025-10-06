@@ -11,7 +11,7 @@ services:
       - "dockflare.hostname=dc.crzynet.com"
       - "dockflare.service=http://service-tracker-dash:8815"
       - "dockflare.access.policy=authenticate"
-      - "dockflare.access.group=dnload-admins
+      - "dockflare.access.group=dnload-admins"
 
       - dockernotifier.notifiers=service-tracker-dashboard
       - dockernotifier.std.internalurl=http://192.168.20.91:8815
