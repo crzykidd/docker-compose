@@ -59,7 +59,7 @@ services:
       start_period: 60s
     networks:
       - app-network
-      - proxy
+      - cloudflare-net
 
 
   job-server:
@@ -117,5 +117,5 @@ services:
 
 networks:
   app-network:
-  proxy:
-    external: true
+  cloudflare-net:
+    external: true 
