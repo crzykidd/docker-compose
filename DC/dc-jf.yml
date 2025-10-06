@@ -2,7 +2,7 @@
 services:
 
   jellyfin:
-    image: jellyfin/jellyfin:10.11.0-rc8
+    image: jellyfin/jellyfin:latest
     container_name: jellyfin
     environment:
       - PUID=1028
