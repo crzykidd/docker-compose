@@ -228,7 +228,7 @@ services:
     image: ghcr.io/plexguide/huntarr:latest
     container_name: huntarr
     restart: always
-    ports:
+    #ports:
     #  - "9705:9705"
     volumes:
       - /var/docker/huntarr:/config
