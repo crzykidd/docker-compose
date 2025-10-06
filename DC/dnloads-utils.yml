@@ -1,36 +1,4 @@
 services:
-  dockflare:
-    image: alplat/dockflare:stable
-    container_name: dockflare
-    restart: unless-stopped
-    ports:
-      - "5000:5000"  # Web UI port
-    labels:
-      - "cloudflare.tunnel.enable=true"
-      - "cloudflare.tunnel.hostname=dc-df01.crzynet.com"
-      - "cloudflare.tunnel.service=http://dockflare:5000"
-      - "cloudflare.tunnel.access.policy=authenticate"
-      - "cloudflare.tunnel.access.name=dc-df01"      
-      - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:5000/
-      - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-df01.crzynet.com/
-      - dockernotifier.std.external.health=true
-      - dockernotifier.std.group=docker-Utilities
-    environment:
-      - CF_API_TOKEN=${CF_API_TOKEN}
-      - CF_ACCOUNT_ID=${CF_ACCOUNT_ID}
-      - CF_ZONE_ID=${CF_ZONE_ID}
-      - TUNNEL_NAME=${TUNNEL_NAME}
-      - CLOUDFLARED_NETWORK_NAME=${CLOUDFLARED_NETWORK_NAME}
-      - GRACE_PERIOD_SECONDS=28800  # 8 hours before removing rules after container stops
-      - LABEL_PREFIX=cloudflare.tunnel  # Prefix for Docker labels
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro  # Required to monitor Docker events
-      - /var/docker/dockflare:/app/data  # Persistent storage for state
-    networks:
-      - proxy  
-
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
@@ -56,6 +24,89 @@ services:
     networks:
       - proxy     
 
+# START DOCKFLARE BLOCK
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:v0.4.1
+    container_name: docker-socket-proxy
+    restart: unless-stopped
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - CONTAINERS=1
+      - EVENTS=1
+      - NETWORKS=1
+      - IMAGES=1
+      - POST=1
+      - PING=1
+      - INFO=1
+      - EXEC=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - dockflare-internal
+
+  dockflare-init:
+    image: alpine:3.20
+    command: ["sh", "-c", "chown -R 65532:65532 /app/data"]
+    volumes:
+      - /var/docker/dockflare/data:/app/data
+    networks:
+      - dockflare-internal
+    restart: "no"
+
+  dockflare:
+    image: alplat/dockflare:stable
+    container_name: dockflare
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.dockflare.rule=Host(`dc-dockflare.crzynet.com`)"
+      - "traefik.http.routers.dockflare.tls=true"
+      - "traefik.http.services.dockflare.loadbalancer.server.port=5000" 
+    
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=https://ar-dockflare.crzynet.com/
+      - dockernotifier.std.internal.health=true
+      - dockernotifier.std.group=docker-utils
+      - dockernotifier.std.sort.priority=1
+
+    ports:
+      - "5000:5000"
+    volumes:
+      - /var/docker/dockflare/data:/app/data
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - REDIS_DB_INDEX=0  # Optional: specify Redis database index (0-15) for isolation from other containers
+      - DOCKER_HOST=tcp://docker-socket-proxy:2375
+    depends_on:
+      docker-socket-proxy:
+        condition: service_started
+      dockflare-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    networks:
+      - cloudflare-net
+      - dockflare-internal
+      - proxy
+
+  redis:
+    image: redis:7-alpine
+    container_name: dockflare-redis
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    volumes:
+      - /var/docker/dockflare/redis:/data
+    networks:
+      - dockflare-internal
+
 networks:
+  cloudflare-net:
+    name: cloudflare-net
+    external: true
   proxy:
     external: true
+  dockflare-internal:
+    name: dockflare-internal      
+
+
