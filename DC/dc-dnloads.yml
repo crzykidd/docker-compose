@@ -124,15 +124,16 @@ services:
       - "dockflare.hostname=dc-ombi.crzynet.com"
       - "dockflare.service=http://dc-ombi:3579"
       - "dockflare.access.policy=bypass"
+      - "dockflare.access.name=geo-block"
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:3579
+      - dockernotifier.std.internalurl=https://dc-ombi.crzynet.com/
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-ombi.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:3579
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=dnloads      
     restart: unless-stopped
     networks:
-      - proxy      
+      - cloudflare-net
 
 
   syncthing:
@@ -154,16 +155,17 @@ services:
       - "dockflare.hostname=dc-syncthing.crzynet.com"
       - "dockflare.service=http://dc-syncthing:7878"
       - "dockflare.access.policy=authenticate"
-      - "dockflare.access.name=dc-syncthing"      
+      - "dockflare.access.group=dnload-admin"      
+
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:8384
+      - dockernotifier.std.internalurl=https://dc-syncthing.crzynet.com/
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-syncthing.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:8384
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=dnloads            
     restart: unless-stopped
     networks:
-      - proxy      
+      - cloudflare-net      
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
@@ -182,15 +184,17 @@ services:
       - "dockflare.hostname=dc-prowlarr.crzynet.com"
       - "dockflare.service=http://dc-prowlarr:9696"
       - "dockflare.access.policy=authenticate"
-      - "dockflare.access.name=dc-prowlarr"
+      - "dockflare.access.group=dnload-admins"
+
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:9696
+      - dockernotifier.std.internalurl=https://dc-prowlarr.crzynet.com/
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-prowlarr.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:9696
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=dnloads      
     networks:
-      - proxy      
+      - cloudflare-net
+
 
   overseerr:
     image: sctx/overseerr:latest
@@ -206,17 +210,19 @@ services:
       - "dockflare.hostname=dc-os.crzynet.com"
       - "dockflare.service=http://dc-overseerr:5055"
       - "dockflare.access.policy=bypass"
+      - "dockflare.access.group=geo-block"
+
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=http://192.168.20.91:5055
+      - dockernotifier.std.internalurl=https://dc-os.crzynet.com/
       - dockernotifier.std.internal.health=true
-      - dockernotifier.std.externalurl=https://dc-os.crzynet.com/
+      - dockernotifier.std.externalurl=http://192.168.20.91:5055
       - dockernotifier.std.external.health=true
       - dockernotifier.std.group=dnloads       
     volumes:
       - /home/mander/docker/dnloads/overseerr:/app/config
     restart: unless-stopped
     networks:
-      - proxy     
+      - cloudflare-net
 
 networks:
   proxy:
