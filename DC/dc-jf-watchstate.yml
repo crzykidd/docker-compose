@@ -16,13 +16,13 @@ services:
 
     labels:
       - "dockflare.enable=true"
-      - "dockflare.hostname=dc-jf-watchstate.crzynet.com"
+      - "dockflare.hostname=dc-watchstate.crzynet.com"
       - "dockflare.service=http://watchstate:8080"
       - "dockflare.access.policy=authenticate"
       - "dockflare.access.group=dnload-admins"   
 
       - dockernotifier.notifiers=service-tracker-dashboard
-      - dockernotifier.std.internalurl=https://dc-jf-watchstate.crzynet.com/
+      - dockernotifier.std.internalurl=https://dc-watchstate.crzynet.com/
       - dockernotifier.std.internal.health=true  
       - dockernotifier.std.externalurl=http://192.168.20.91:8088/
       - dockernotifier.std.external.health=true  
