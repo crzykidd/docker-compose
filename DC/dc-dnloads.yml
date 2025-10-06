@@ -37,7 +37,7 @@ services:
       - dockernotifier.std.internal.health=true
       - dockernotifier.std.externalurl=http://192.168.20.91:6767
       - dockernotifier.std.external.health=true
-      - dockernotifier.std.group=dnload
+      - dockernotifier.std.group=dnloads
       
     restart: unless-stopped
     networks:
@@ -70,7 +70,7 @@ services:
       - dockernotifier.std.internal.health=true
       - dockernotifier.std.externalurl=http://192.168.20.91:8989
       - dockernotifier.std.external.health=true
-      - dockernotifier.std.group=dnload
+      - dockernotifier.std.group=dnloads
 
     restart: unless-stopped
     networks:
