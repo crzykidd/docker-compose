@@ -1,0 +1,60 @@
+services:
+  jellystat-db:
+    image: 'postgres:15.2'
+    shm_size: 1gb
+    container_name: jellystat-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /var/docker/jellystat/postgres:/var/lib/postgresql/data
+    networks:
+      - jellystat
+  jellystat:
+    image: 'cyfershepard/jellystat:latest'
+    container_name: jellystat
+    restart: unless-stopped
+    labels:
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-dc=jellstats.crzynet.com"
+      - "dockflare.service=http://jellystat:3000"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"   
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.externalurl=https://dc-jellystat.crzynet.com/
+      - dockernotifier.std.external.health=true  
+      - dockernotifier.std.group=media 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_IP: jellystat-db
+      POSTGRES_PORT: 5432
+      JWT_SECRET: ${SECRET_JWT_KEY}
+      TZ: America/Los_Angeles
+    volumes:
+      - jellystat-backup-data:/app/backend/backup-data
+#    ports:
+#      - '3000:3000'
+    depends_on:
+      - jellystat-db
+    networks:
+      - cloudflare-net
+      - jellystat
+networks:
+  cloudflare-net:
+    external: true
+  jellystat:
+
+#logging:
+#  driver: json-file
+#  options:
+#    max-file: '5'
+#    max-size: 10m
+
+volumes:
+  jellystat-backup-data:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.20.105,vers=4,hard"
+      device: ":/volume1/Media/backup/jellystat"    
