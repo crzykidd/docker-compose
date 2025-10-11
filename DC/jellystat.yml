@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     labels:
       - "dockflare.enable=true"
-      - "dockflare.hostname=dc-jellstats.crzynet.com"
+      - "dockflare.hostname=dc-jellystat.crzynet.com"
       - "dockflare.service=http://jellystat:3000"
       - "dockflare.access.policy=authenticate"
       - "dockflare.access.group=dnload-admins"   
