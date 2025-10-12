@@ -10,6 +10,7 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - /var/docker/ssd/jellyfin/config:/config
+      - /var/docker/ssd/jellyfin/cache:/cache
       #- seanas01-jellyfin-cache:/cache      
       - seanas01-media:/mnt/seanas01-media
       - seanas02-media:/mnt/seanas02-media
