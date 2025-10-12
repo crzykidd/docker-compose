@@ -9,7 +9,7 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
     volumes:
-      - /var/docker/jellyfin/config:/config
+      - /var/docker/ssd/jellyfin/config:/config
       #- seanas01-jellyfin-cache:/cache      
       - seanas01-media:/mnt/seanas01-media
       - seanas02-media:/mnt/seanas02-media
