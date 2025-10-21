@@ -25,9 +25,9 @@ services:
       - '--storage.tsdb.path=/prometheus'
     restart: unless-stopped
     networks:
-      - proxy
+      - cloudflare-net 
 
 networks:
-  proxy:
+  cloudflare-net:
     external: true    
 
