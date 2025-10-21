@@ -1,19 +1,19 @@
 services:
   # Database migration service - runs once to set up tables
-  migrate:
-    image: docker.io/fredrikburmester/streamystats-v2-migrate:${VERSION:-latest}
-    environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@vectorchord:5432/${POSTGRES_DB:-streamystats}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-streamystats}
-      - PGPASSWORD=${POSTGRES_PASSWORD:-postgres}
-    depends_on:
-      vectorchord:
-        condition: service_healthy
-    restart: "no"
-    networks:
-      - app-network
+#  migrate:
+#    image: docker.io/fredrikburmester/streamystats-v2-migrate:${VERSION:-latest}
+#    environment:
+#      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@vectorchord:5432/${POSTGRES_DB:-streamystats}
+#      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+#      - POSTGRES_DB=${POSTGRES_DB:-streamystats}
+#      - PGPASSWORD=${POSTGRES_PASSWORD:-postgres}
+#    depends_on:
+#      vectorchord:
+#        condition: service_healthy
+#    restart: "no"
+#    networks:
+#      - app-network
 
   nextjs-app:
     image: docker.io/fredrikburmester/streamystats-v2-nextjs:${VERSION:-latest}
