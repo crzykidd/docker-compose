@@ -27,6 +27,29 @@ services:
     networks:
       - cloudflare-net 
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    #ports:
+    #  - "3457:3000" #modify 3457 to your setup needs
+    volumes:
+      - "/var/docker/grafana:/var/lib/grafana"
+    labels:
+      - "dockflare.enable=true"
+      - "dockflare.hostname=dc-graf.crzynet.com"
+      - "dockflare.service=http://grafana:3000"
+      - "dockflare.access.policy=authenticate"
+      - "dockflare.access.group=dnload-admins"        
+      - dockernotifier.enable=true
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.group=monitoring
+      - dockernotifier.std.internalurl=https://dc-graf.crzynet.com/
+      - dockernotifier.std.internal.health=true  
+
+    networks:
+      - cloudflare-net      
+
 networks:
   cloudflare-net:
     external: true    
