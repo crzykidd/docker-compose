@@ -72,8 +72,8 @@ services:
     depends_on:
       vectorchord:
         condition: service_healthy
-      migrate:
-        condition: service_completed_successfully
+      #migrate:
+      #  condition: service_completed_successfully
     restart: unless-stopped
     healthcheck:
       test:
