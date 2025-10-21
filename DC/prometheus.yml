@@ -18,7 +18,7 @@ services:
       - dockernotifier.std.internal.health=true  
       - dockernotifier.std.group=monitoring    
     volumes:
-      - /var.docker/prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - /var/docker/prometheus/config.yml:/etc/prometheus/prometheus.yml
       - /var/docker/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
