@@ -43,17 +43,14 @@ volumes:
   seanas01-media:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.20.90,nfsvers=4,hard"
+      #o: "addr=192.168.20.90,nfsvers=4,hard"
+      o: "addr=192.168.20.90,nfsvers=4,proto=tcp,soft,timeo=100,retrans=5,rw,nosuid,nodev,noexec,noatime"
       device: ":/volume1/Media"      
-  seanas01-jellyfin-cache:
-    driver_opts:
-      type: "nfs"
-      o: "addr=192.168.20.90,nfsvers=4,hard"
-      device: ":/volume1/Media/Jellyfin/cache"          
+     
   seanas02-media:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.20.105,nfsvers=4,hard"
+      o: "addr=192.168.20.105,nfsvers=4,proto=tcp,soft,timeo=100,retrans=5,rw,nosuid,nodev,noexec,noatime"
       device: ":/volume1/Media"      
  
  
