@@ -24,7 +24,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.dc-jf.rule=Host(`dc-jf.crzynet.com`)"
-      - "traefik.http.routers.dc-jf.entrypoints=websecure"      
+      - "traefik.http.routers.dc-jf.entrypoints=https"      
       - "traefik.http.routers.dc-jf.tls=true"
       - "traefik.http.services.dc-jf.loadbalancer.server.port=8096" 
       - dockernotifier.notifiers=service-tracker-dashboard
