@@ -1,0 +1,33 @@
+services:
+  jellyswarrm:
+    image: ghcr.io/llukas22/jellyswarrm:latest
+    container_name: jellyswarrm
+    restart: unless-stopped
+    #ports:
+    #  - 3000:3000
+    volumes:
+      - /var/docker/jellyswarrm:/app/data
+    environment:
+      - JELLYSWARRM_USERNAME=${JELLYSWARRM_USERNAME}
+      - JELLYSWARRM_PASSWORD=${JELLYSWARRM_PASSWORD}
+
+    networks:
+      - proxy    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.jf.rule=Host(`jf.crzynet.com`)"
+      - "traefik.http.routers.jf.entrypoints=https"      
+      - "traefik.http.routers.jf.tls=true"
+      - "traefik.http.services.jf.loadbalancer.server.port=3000" 
+      - dockernotifier.notifiers=service-tracker-dashboard
+      - dockernotifier.std.internalurl=https://jf.crzynet.com/
+      - dockernotifier.std.internal.health=true
+      #- dockernotifier.std.externalurl=https://dc-jf.crzynet.com:32222/
+      #- dockernotifier.std.external.health=true
+      - dockernotifier.std.group=Media
+      - dockernotifier.std.sort.priority=4       
+
+networks:
+  proxy:
+    external: true
