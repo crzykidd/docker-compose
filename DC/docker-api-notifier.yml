@@ -18,33 +18,33 @@ services:
     networks:
        proxy:
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    restart: unless-stopped
-    ports:
-      - 8081:8080
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+ # cadvisor:
+ #   image: gcr.io/cadvisor/cadvisor:latest
+ #   container_name: cadvisor
+ #   restart: unless-stopped
+ #   ports:
+ #     - 8081:8080
+ #   volumes:
+ #     - /:/rootfs:ro
+ #     - /var/run:/var/run:rw
+ #     - /sys:/sys:ro
+ #     - /var/lib/docker/:/var/lib/docker:ro
 
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    restart: unless-stopped
-    ports:
-      - 9100:9100
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-      - /dev:/host/dev:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'              
+ # node-exporter:
+ #   image: prom/node-exporter:latest
+ #   container_name: node-exporter
+ #   restart: unless-stopped
+ #   ports:
+ #     - 9100:9100
+ #   volumes:
+ #     - /proc:/host/proc:ro
+ #     - /sys:/host/sys:ro
+ #     - /:/rootfs:ro
+ #     - /dev:/host/dev:ro
+ #   command:
+ #     - '--path.procfs=/host/proc'
+ #     - '--path.sysfs=/host/sys'
+ #     - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'              
 networks:
   proxy:
     external: true
