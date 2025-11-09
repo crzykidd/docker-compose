@@ -2,6 +2,7 @@ services:
   tracker:
     image: crzykidd/service-tracker-dashboard:latest
     container_name: service-tracker-dash
+    restart: unless-stopped    
     ports:
       - "8815:8815"
     volumes:
