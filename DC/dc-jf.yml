@@ -44,14 +44,13 @@ volumes:
   seanas01-media:
     driver_opts:
       type: "nfs"
-      #o: "addr=192.168.20.90,nfsvers=4,hard"
-      o: "addr=192.168.20.90,nfsvers=4,proto=tcp,soft,timeo=100,retrans=5,rw,nosuid,nodev,noexec,noatime"
-      device: ":/volume1/Media"      
-     
+      o: "addr=192.168.20.90,nfsvers=4.1,proto=tcp,hard,timeo=600,retrans=2,rsize=1048576,wsize=1048576,rw,nosuid,nodev,noexec,noatime"
+      device: ":/volume1/Media"
+
   seanas02-media:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.20.105,nfsvers=4,proto=tcp,soft,timeo=100,retrans=5,rw,nosuid,nodev,noexec,noatime"
-      device: ":/volume1/Media"      
+      o: "addr=192.168.20.105,nfsvers=4.1,proto=tcp,hard,timeo=600,retrans=2,rsize=1048576,wsize=1048576,rw,nosuid,nodev,noexec,noatime"
+      device: ":/volume1/Media" 
  
  
