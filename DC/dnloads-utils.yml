@@ -160,7 +160,7 @@ networks:
   tailscale:
     name: tailscale    
 
-  volumes:
+volumes:
   tsbridge-state:
 
 
