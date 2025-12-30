@@ -127,7 +127,27 @@ services:
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'      
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'   
+
+  tsbridge:
+    image: ghcr.io/jtdowney/tsbridge:latest
+    command: ["--provider", "docker"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Required for label discovery
+      - tsbridge-state:/var/lib/tsbridge
+    environment:
+      - TS_OAUTH_CLIENT_ID=${TS_OAUTH_CLIENT_ID}
+      - TS_OAUTH_CLIENT_SECRET=${TS_OAUTH_CLIENT_SECRET}
+    labels:
+      - "tsbridge.tailscale.oauth_client_id_env=TS_OAUTH_CLIENT_ID"
+      - "tsbridge.tailscale.oauth_client_secret_env=TS_OAUTH_CLIENT_SECRET"
+      - "tsbridge.tailscale.state_dir=/var/lib/tsbridge"
+      - "tsbridge.tailscale.default_tags=tag:server" # Must match or be owned by your OAuth client's tag
+
+    networks:
+      - tailscale
+      - proxy
+      - cloudflare-net         
 
 networks:
   cloudflare-net:
@@ -136,6 +156,11 @@ networks:
   proxy:
     external: true
   dockflare-internal:
-    name: dockflare-internal      
+    name: dockflare-internal  
+  tailscale:
+    name: tailscale    
+
+  volumes:
+  tsbridge-state:
 
 
